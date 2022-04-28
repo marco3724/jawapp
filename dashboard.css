@@ -1,0 +1,167 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+
+
+
+.content{
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+}
+
+/*main*/
+
+.current{
+    display: grid;
+    grid-template-rows:1fr 3fr 3fr;
+    height: 100vh;
+   
+}
+.header{
+  padding: 1em;
+ 
+  text-align: center;
+
+}
+.header input{
+    border: none;
+    font-size: 1.3em;
+    box-sizing: border-box;
+    border-bottom: white solid 2px; /*solo per non far muovere gli elmenti quando viene focusato*/
+}
+.header input:focus{
+    outline: none;
+    border-bottom: #0F1621 solid 2px;
+}
+.main{
+   display: grid;
+   grid-template-columns: 1fr 1fr;
+   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+   border-radius:15px ;
+    
+}
+.main-info{
+display: grid;
+grid-template-rows: 1fr 3fr 1fr;
+padding: 1em;
+}
+
+.temperature{
+    position: relative;
+}
+.center{
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+.center>*{
+    text-align: center;
+}
+.location{
+    display: flex;
+    justify-content: space-between;
+}
+.number{
+    align-self: center;
+    font-size: 3em;
+}
+
+
+.main .chart{
+    background-color: aqua;
+    margin: 1em;
+}
+
+
+.other{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+
+.other-info{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-top: 2em;
+
+    margin-bottom: 2em;
+    gap:2em;
+}
+
+.info{
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    border-radius: 15px;
+    padding: 1em;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background-color: lightsteelblue;
+ 
+   
+}
+.text-info{
+    display: grid;
+
+}
+.info .chart{
+    background-color: #0F1621;
+ 
+}
+
+
+/*forecast*/
+.forecast{
+    border-left: #A7A9A9 solid 1px;
+    font-size: 1.2em;
+}
+.title{
+    font-size: 2em;
+    padding: 1em;
+    text-align: center;
+}
+.hourly{
+    padding: 2em;
+}
+.hour-container{
+    display: flex;
+  
+}
+.hour{
+    margin-top: 1em;
+    margin-right: 1em;
+    padding: 1em;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    border-radius: 15px;
+  
+}
+.hour>*{
+    text-align: center;
+}
+.temp{
+    font-weight: bold;
+}
+.hour:first-child{
+    background-color: lightskyblue;
+}
+
+.daily{
+display: flex;
+flex-direction: column;
+padding: 2em;
+gap: 1em;
+}
+
+
+.day{
+    display: flex;
+    justify-content: space-between;
+   
+
+}
+.text{
+    font-weight: bold;
+}
