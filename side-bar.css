@@ -8,6 +8,16 @@ body{
     grid-template-columns: 1fr 6fr;
     gap:2em;
 }
+.abs-lft{
+    position: absolute;
+    font-size: 1.2em;
+    padding:1em;
+    display: none;
+    
+}
+.abs-lft:hover,.close:hover{
+    cursor: pointer;
+}
 
 /*menu */
 .menu{
@@ -25,7 +35,19 @@ body{
     color: #A7A9A9;
     
 }
+.close{
+    display: none;
+    font-size: 1.5em;
+    position: relative;
 
+
+  
+}
+.close i {
+    color: #0F1621;
+    position: relative;
+   
+}
 .text a{
     font-weight: bold;
     text-decoration: none;
@@ -49,3 +71,27 @@ body{
     color: #0F1621 ;
 }
 
+@media (max-width:1000px){
+    .menu{
+        position: fixed;
+        left: -100%;
+        background-color: white;
+        z-index: 99;
+        border-right: none;
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
+        width: 50%;
+        transition:left 200ms;
+    }
+    .wrapper{
+        grid-template-columns: 1fr;
+    }
+    .abs-lft{
+        display: block;
+    }
+    .close{
+       
+        display:flex;
+        justify-content: flex-end;
+       
+    }
+}
