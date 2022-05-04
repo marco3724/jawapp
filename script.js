@@ -8,4 +8,3 @@ document.querySelector('.close').addEventListener('click',()=>{
   let menu = document.querySelector('.menu');
   menu.style.left = '-100%';
 })
-

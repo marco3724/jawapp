@@ -1,5 +1,5 @@
-app.component('side-bar',{
-    template:
+app.component("side-bar", {
+  template:
     /*html*/
     `<div class="menu">
         <div class="close"> <i class="fa-solid fa-xmark"></i></div>
@@ -30,6 +30,10 @@ app.component('side-bar',{
             <i class="fa-solid fa-arrow-right-from-bracket"></i>
             <span class="text"><a href="#"> Logout</a></span>
         </div>
+        <div class="item">
+            <i class="fa-solid fa-gears"></i>
+            <span class="text"><a href="#"> Debug</a></span>
+        </div>
         
-    </div>`
-})
+    </div>`,
+});
