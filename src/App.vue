@@ -1,9 +1,9 @@
 <template>
 
       <div class="wrapper" >
-        <side-bar/>
+        <side-bar :class="menu" @closeMenu="menu ='menu menu-close'"/>
         <div class="content">
-        <div class="abs-lft"><i class="fa-solid fa-bars"></i></div>
+        <div class="abs-lft" @click="menu ='menu menu-open'"><i class="fa-solid fa-bars"></i></div>
         <router-view/>
         </div>
     </div>
@@ -15,6 +15,11 @@
 import SideBar from '@/components/SideBar.vue'
 
 export default {
+  data () {
+    return {
+      menu: 'menu' // Stato di apertura del menu
+    }
+  },
   components: {
     SideBar
   }
@@ -51,9 +56,23 @@ body{
     cursor: pointer;
 }
 
-@media (max-width:1000px){
+@media (max-width:1024px){
     .abs-lft{
         display: block;
+    }
+    .wrapper{
+        grid-template-columns: 1fr;
+    }
+}
+@media(max-width:800px){
+    .content{
+        grid-template-columns: 1fr;
+        gap:2em;
+    }
+}
+@media(max-width:500px){
+    *{
+      padding:0;
     }
 }
 </style>

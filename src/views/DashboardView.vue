@@ -1,8 +1,6 @@
 <template>
-  <div class="abs-lft"><i class="fa-solid fa-bars"></i></div>
-     <div class="current">
+    <div class="current">
         <div class="header">
-
             <div class="center">
                 <form class="search-bar" @submit.prevent="searchByCity">
                     <i class="fa-solid fa-magnifying-glass"></i>
@@ -31,6 +29,7 @@
                 </div>
             </div>
             <div class="chart">
+                <div class="center"><canvas id="myChart"></canvas></div>
             </div>
         </div>
         <div class="other-info">
@@ -113,6 +112,8 @@
 
 <script>
 
+import Chart from 'chart.js/auto'
+
 export default {
   data () {
     return {
@@ -125,8 +126,24 @@ export default {
       },
       hourly: [],
       daily: [],
-      key: '80b42f8e53b81f545a7268529925647e'
+      key: '80b42f8e53b81f545a7268529925647e',
+      chart: {
+        labels: ['Morning', 'Afternon', ' Evening', 'Night'],
+        datasets: [{
+          label: 'Temperature',
+          data: [15, 24, 17, 8]
+        }]
+      }
     }
+  },
+  mounted () {
+    const chart = document.getElementById('myChart').getContext('2d')
+    // eslint-disable-next-line no-unused-vars
+    const massPopChart = new Chart(chart, {
+      type: 'line',
+      data: this.chart,
+      options: {}
+    })
   },
   methods: {
     async searchByCity () {
@@ -259,7 +276,7 @@ padding: 1em;
 }
 
 .main .chart{
-    background-color: aqua;
+    background-color: rgba(100, 100, 111, 0.5);
     margin: 1em;
 }
 
@@ -375,17 +392,30 @@ position: relative;
 .text{
     font-weight: bold;
 }
-@media (max-width:1000px){
+@media (max-width:1024px){
     .current{
         padding-left: 3em; /*serve per compensare*/
         padding-right: 1em;
     }
 }
 
-@media(max-width:650px){
-    .content{
-        grid-template-columns: 1fr;
-        gap:2em;
+@media(max-width:800px){
+    .daily{
+        overflow-y: visible;
+    }
+}
+
+@media(max-width:600px){
+    .current{
+        padding: 0;
+        margin: 0;
+    }
+
+    .daily, .hourly, .week{
+        padding-left:0;
+        padding-right: 0;
+        margin-left:0;
+        margin-right: 0;
     }
 }
 </style>
