@@ -50,6 +50,7 @@ body{
     font-size: 1.2em;
     padding:1em;
     display: none;
+    z-index:3;
 
 }
 .abs-lft:hover,.close:hover{
@@ -68,6 +69,10 @@ body{
     .content{
         grid-template-columns: 1fr;
         gap:2em;
+        margin-top:2em;
+    }
+    .abs-lft{
+        top:0;
     }
 }
 @media(max-width:500px){

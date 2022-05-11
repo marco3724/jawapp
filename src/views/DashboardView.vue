@@ -29,7 +29,9 @@
                 </div>
             </div>
             <div class="chart">
-                <div class="center"><canvas id="myChart"></canvas></div>
+
+                    <weather-chart :chart-data="weatherChartData" :chart-options="chartOptions"/>
+
             </div>
         </div>
         <div class="other-info">
@@ -112,11 +114,22 @@
 
 <script>
 
-import Chart from 'chart.js/auto'
-
+import WeatherChart from './components/WeatherChart'
 export default {
+  components: {
+    WeatherChart
+  },
+  created () {
+    this.city = 'rome'
+    this.searchByCity()
+  },
   data () {
     return {
+      weatherChartData: {
+      },
+      chartOptions: {
+        responsive: true
+      },
       location: {},
       city: '',
       current: {
@@ -126,42 +139,50 @@ export default {
       },
       hourly: [],
       daily: [],
-      key: '80b42f8e53b81f545a7268529925647e',
-      chart: {
-        labels: ['Morning', 'Afternon', ' Evening', 'Night'],
-        datasets: [{
-          label: 'Temperature',
-          data: [15, 24, 17, 8]
-        }]
-      }
+      key: '80b42f8e53b81f545a7268529925647e'
     }
-  },
-  mounted () {
-    const chart = document.getElementById('myChart').getContext('2d')
-    // eslint-disable-next-line no-unused-vars
-    const massPopChart = new Chart(chart, {
-      type: 'line',
-      data: this.chart,
-      options: {}
-    })
   },
   methods: {
     async searchByCity () {
-      const res = await fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${this.city}&limit=1&appid=${this.key}`)
-      const loc = await res.json()
-      this.location = loc[0]
-      console.log(loc)
-      const res1 = await fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${loc[0].lat}&lon=${loc[0].lon}&exclude={alerts,minutely}&units=metric&appid=${this.key}`)
-      const data = await res1.json()
-      this.cityName = this.city
-      this.current = data.current
-      for (let i = 0; i < 10; i++) {
-        this.hourly.push(data.hourly[i])
+      try {
+        const res = await fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${this.city}&limit=1&appid=${this.key}`)
+        const loc = await res.json()
+        this.location = loc[0]
+        console.log(loc)
+        const res1 = await fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${loc[0].lat}&lon=${loc[0].lon}&exclude={alerts,minutely}&units=metric&appid=${this.key}`)
+        const data = await res1.json()
+        this.cityName = this.city
+        this.current = data.current
+        this.hourly = []
+        this.daily = []
+        for (let i = 0; i < 24; i++) {
+          this.hourly.push(data.hourly[i])
+        }
+        const h = []
+        const l = ['now']
+        for (let i = 0; i < 12; i = i + 2) {
+          h.push(this.hourly[i].temp)
+          if (i !== 0) { l.push(`+${i}hr`) }
+        }
+        this.weatherChartData = {
+          labels: l,
+          datasets: [{
+            label: 'Temperature',
+            data: h,
+            borderColor: '#077187',
+            pointBorderColor: '#0E1428',
+            pointBackgroundColor: '#AFD6AC',
+            backgroundColor: '#74A57F'
+
+          }]
+        }
+        for (let i = 1; i < 8; i++) {
+          this.daily.push(data.daily[i])
+        }
+      // console.log(data)
+      } catch (e) {
+        alert('citta non trovata')
       }
-      for (let i = 1; i < 8; i++) {
-        this.daily.push(data.daily[i])
-      }
-      console.log(data)
     },
     formatTime (time) {
       const date = new Date(time * 1000)
@@ -246,7 +267,6 @@ export default {
    grid-template-columns: 1fr 1fr;
    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
    border-radius:15px ;
-
 }
 .main-info{
 display: grid;
@@ -276,8 +296,12 @@ padding: 1em;
 }
 
 .main .chart{
-    background-color: rgba(100, 100, 111, 0.5);
+    position:relative;
+
     margin: 1em;
+    display: grid;
+    justify-content: center;
+    align-content: center;
 }
 
 .other{
