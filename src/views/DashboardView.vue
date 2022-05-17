@@ -155,7 +155,7 @@ export default {
   methods: {
     async searchByCity () {
       try {
-        const res = await fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${this.city}&limit=1&appid=${this.key}`)
+        const res = await fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${this.city}&limit=1&appid=${this.key}`)
         const loc = await res.json()
         this.location = loc[0]
         console.log(loc)
