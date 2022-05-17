@@ -3,8 +3,8 @@
       <div class="wrapper" >
         <side-bar :class="menu" @closeMenu="menu ='menu menu-close'"/>
         <div class="content">
-        <div class="abs-lft" @click="menu ='menu menu-open'"><i class="fa-solid fa-bars"></i></div>
-        <router-view/>
+            <div class="abs-lft" @click="menu ='menu menu-open'"><i class="fa-solid fa-bars"></i></div>
+            <router-view/>
         </div>
     </div>
 

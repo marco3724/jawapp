@@ -42,7 +42,9 @@
                     <div class="value">{{current.wind_speed}} m/s</div>
                 </div>
                 <div class="chart">
-
+                    <div class="circular-progress">
+                        <div class="value-container">0%</div>
+                    </div>
                 </div>
             </div>
 
@@ -53,7 +55,9 @@
                     <div class="value">{{current.humidity}}%</div>
                 </div>
                 <div class="chart">
-
+                    <div class="circular-progress">
+                        <div class="value-container">0%</div>
+                    </div>
                 </div>
             </div>
 
@@ -64,7 +68,9 @@
                     <div class="value">{{current.pressure}}hpa</div>
                 </div>
                 <div class="chart">
-
+                    <div class="circular-progress">
+                        <div class="value-container">0%</div>
+                    </div>
                 </div>
             </div>
 
@@ -75,7 +81,9 @@
                     <div class="value">{{current.uvi}}</div>
                 </div>
                 <div class="chart">
-
+                    <div class="circular-progress">
+                        <div class="value-container">0%</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -142,6 +150,8 @@ export default {
       key: '80b42f8e53b81f545a7268529925647e'
     }
   },
+  mounted () {
+  },
   methods: {
     async searchByCity () {
       try {
@@ -179,9 +189,10 @@ export default {
         for (let i = 1; i < 8; i++) {
           this.daily.push(data.daily[i])
         }
-      // console.log(data)
+        this.charts()
+        console.log(data)
       } catch (e) {
-        alert('citta non trovata')
+        alert('citta non trovata' + e)
       }
     },
     formatTime (time) {
@@ -210,6 +221,34 @@ export default {
         date = new Date().toString().split(' ')
       }
       return date[2] + ' ' + date[1]
+    },
+    charts () {
+      const progressBar = document.querySelectorAll('.circular-progress')
+      const valueContainer = document.querySelectorAll('.value-container')
+
+      const progressValue = [0, 0, 0, 0]// in percentuale
+      const progressEndValue = [this.current.wind_speed, this.current.humidity, this.current.pressure - 990, this.current.uvi]// non in percentuale [( ho messo alla pressure un offest di 990)]
+      const maxvalues = [30, 100, 35, 11]// valore limite  che ogni parametro puo assumere
+      // 990-1025  e' il range della pressione
+      // 0-11 range dell uv
+      // 0-30 metri al secondo (30 pericolo)
+      const speed = 30
+      const color = ['rgba(0,255,0,1)', 'rgba(0,0,255,1)', 'rgba(255,255,0,1)', 'rgba(255,0,0,1)']
+      const base = ['rgba(0,255,0,0.3)', 'rgba(0,0,255,0.3)', 'rgba(255,255,0,0.3)', 'rgba(255,0,0,0.3)']
+      const progress = []
+      for (let i = 0; i < progressBar.length; i++) {
+        progress[i] = setInterval(() => {
+          progressValue[i]++
+          valueContainer[i].textContent = `${progressValue[i]}%`
+          progressBar[i].style.background = `conic-gradient(
+      ${color[i]} ${progressValue[i] * 3.6}deg,
+      ${base[i]} ${progressValue[i] * 3.6}deg
+      )`
+          if (progressValue[i] >= (100 * progressEndValue[i] / maxvalues[i]).toFixed(0)) { // mi calcolo il valore in percentuale
+            clearInterval(progress[i])
+          }
+        }, speed)
+      }
     }
 
   },
@@ -333,9 +372,34 @@ padding: 1em;
 
 }
 .info .chart{
-    background-color: #0F1621;
+    /* background-color: #0F1621; */
+    display: grid;
+    justify-content: center;
+    align-content:center;
 
 }
+.circular-progress {
+  position: relative;
+  height: 80px;
+  width: 80px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+}
+.circular-progress:before {
+  content: "";
+  position: absolute;
+  height: 84%;
+  width: 84%;
+  background-color: #ffffff;
+  border-radius: 50%;
+}
+.value-container {
+  position: relative;
+  font-family: "Poppins", sans-serif;
+  color: #231c3d;
+}
+
 .name{
     font-size: 1.3em;
 }

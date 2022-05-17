@@ -7,7 +7,7 @@
         </div>
         <div class="item">
             <i class="fa-solid fa-border-all"></i>
-            <span class="text"><a href="#"> Dashboard</a></span>
+            <span class="text"><router-link to="/"> Dashboard</router-link></span>
         </div>
 
         <div class="item">
@@ -22,7 +22,7 @@
 
         <div class="item">
             <i class="fa-regular fa-thumbs-up"></i>
-            <span class="text"><a href="#"> Review</a></span>
+            <span class="text"><router-link to="Review"> Review</router-link></span>
         </div>
         <div class="item">
             <i class="fa-solid fa-arrow-right-from-bracket"></i>
