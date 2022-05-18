@@ -12,12 +12,12 @@
 
         <div class="item">
             <i class="fa-regular fa-map"></i>
-            <span class="text"><a href="#">Map</a></span>
+            <span class="text"><router-link to="/">Map</router-link></span>
         </div>
 
         <div class="item">
             <i class="fa-regular fa-star"></i>
-            <span class="text"><a href="#">Favourits</a></span>
+            <span class="text"><router-link to="/">Favourites</router-link></span>
         </div>
 
         <div class="item">
@@ -26,19 +26,19 @@
         </div>
         <div class="item">
             <i class="fa-solid fa-arrow-right-from-bracket"></i>
-            <span class="text"><a href="register">Login</a></span>
+            <span class="text"><router-link to="/">Login</router-link></span>
         </div>
         <div class="item">
             <i class="fa-solid fa-arrow-right-from-bracket"></i>
-            <span class="text"><a href="register">Register</a></span>
+            <span class="text"><router-link to="/register">Register</router-link></span>
         </div>
         <div class="item">
             <i class="fa-solid fa-arrow-right-from-bracket"></i>
-            <span class="text"><a href="#">Logout</a></span>
+            <span class="text"><router-link to="/">Logout</router-link></span>
         </div>
         <div class="item">
             <i class="fa-solid fa-gears"></i>
-            <span class="text"><a href="#">Debug</a></span>
+            <span class="text"><router-link to="/">Debug</router-link></span>
         </div>
 
     </div>
