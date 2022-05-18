@@ -1,13 +1,17 @@
 <template>
-  <div class="menu">
-        <div class="close"> <i class="fa-solid fa-xmark"></i></div>
+  <div >
+        <div class="close" @click="closeMenu()"> <i class="fa-solid fa-xmark"></i></div>
         <div class="logo">
             <i class="fa-solid fa-atom"></i>
             <span class="text">JAWA</span>
         </div>
         <div class="item">
             <i class="fa-solid fa-border-all"></i>
+<<<<<<< HEAD
             <span class="text"><a href="/">Dashboard</a></span>
+=======
+            <span class="text"><router-link to="/"> Dashboard</router-link></span>
+>>>>>>> b389bc90735e905a3ae822d0d38e9bfd0524d99d
         </div>
 
         <div class="item">
@@ -22,7 +26,11 @@
 
         <div class="item">
             <i class="fa-regular fa-thumbs-up"></i>
+<<<<<<< HEAD
             <span class="text"><a href="#">Review</a></span>
+=======
+            <span class="text"><router-link to="Review"> Review</router-link></span>
+>>>>>>> b389bc90735e905a3ae822d0d38e9bfd0524d99d
         </div>
         <div class="item">
             <i class="fa-solid fa-arrow-right-from-bracket"></i>
@@ -46,7 +54,6 @@
 
 <script>
 export default {
-
   data () {
     return { isDebug: false }
   },
@@ -57,16 +64,27 @@ export default {
     } else {
       this.isDebug = false
     }
+  },
+  methods: {
+    closeMenu () {
+      this.$emit('closeMenu')
+    }
   }
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .menu{
     box-sizing: border-box;
     border-right: 1px solid #A7A9A9;
-    height: 100vh;
+    height: 100%;
 
+}
+.menu-open{
+    left: 0%!important;
+}
+.menu-close{
+    left: -100%!important;
 }
 .menu>*{
     padding: 1em;
@@ -120,12 +138,6 @@ export default {
         box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
         width: 50%;
         transition:left 200ms;
-    }
-    .wrapper{
-        grid-template-columns: 1fr;
-    }
-    .abs-lft{
-        display: block;
     }
     .close{
 
