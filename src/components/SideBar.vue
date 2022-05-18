@@ -7,11 +7,7 @@
         </div>
         <div class="item">
             <i class="fa-solid fa-border-all"></i>
-<<<<<<< HEAD
-            <span class="text"><a href="/">Dashboard</a></span>
-=======
             <span class="text"><router-link to="/"> Dashboard</router-link></span>
->>>>>>> b389bc90735e905a3ae822d0d38e9bfd0524d99d
         </div>
 
         <div class="item">
@@ -26,11 +22,7 @@
 
         <div class="item">
             <i class="fa-regular fa-thumbs-up"></i>
-<<<<<<< HEAD
-            <span class="text"><a href="#">Review</a></span>
-=======
             <span class="text"><router-link to="Review"> Review</router-link></span>
->>>>>>> b389bc90735e905a3ae822d0d38e9bfd0524d99d
         </div>
         <div class="item">
             <i class="fa-solid fa-arrow-right-from-bracket"></i>
