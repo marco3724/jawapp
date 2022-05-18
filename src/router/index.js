@@ -1,11 +1,17 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import DashboardView from '../views/DashboardView.vue'
+import RegistrationForm from '../views/RegistrationFormView.vue'
 
 const routes = [
   {
     path: '/',
     name: 'dashboard',
     component: DashboardView
+  },
+  {
+    path: '/register',
+    name: 'register',
+    component: RegistrationForm
   }
   // {
   //   path: '/about',
