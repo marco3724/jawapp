@@ -25,11 +25,11 @@
             <span class="text"><router-link to="Review"> Review</router-link></span>
         </div>
         <div class="item">
-            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            <i class="fa-solid fa-arrow-right-to-bracket"></i>
             <span class="text"><router-link to="/">Login</router-link></span>
         </div>
         <div class="item">
-            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            <i class="fa-solid fa-arrow-right-to-bracket"></i>
             <span class="text"><router-link to="/register">Register</router-link></span>
         </div>
         <div class="item">
