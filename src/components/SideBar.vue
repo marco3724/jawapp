@@ -26,7 +26,7 @@
         </div>
         <div class="item">
             <i class="fa-solid fa-arrow-right-to-bracket"></i>
-            <span class="text"><router-link to="/">Login</router-link></span>
+            <span class="text"><router-link to="/login">Login</router-link></span>
         </div>
         <div class="item">
             <i class="fa-solid fa-arrow-right-to-bracket"></i>

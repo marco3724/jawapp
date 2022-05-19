@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import DashboardView from '../views/DashboardView.vue'
 import RegistrationFormView from '../views/RegistrationFormView.vue'
+import LoginFormView from '../views/LoginFormView.vue'
 import ReviewView from '../views/ReviewView.vue'
 
 const routes = [
@@ -13,6 +14,11 @@ const routes = [
     path: '/register',
     name: 'register',
     component: RegistrationFormView
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: LoginFormView
   },
   {
     path: '/review',

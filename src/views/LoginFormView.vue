@@ -1,16 +1,15 @@
 <template>
+
   <div class="form_wrapper">
+  <transition name="toast">
+  <Toast v-if="showToast"/>
+  </transition>
     <div class="form_container">
       <div class="title_container">
-        <h2>jawapp Registration Form</h2>
+        <h2>Welcome Back!</h2>
       </div>
       <div class="row clearfix">
         <div class="form">
-            <div class="input_field">
-              <span><i aria-hidden="true" class="fa fa-user"></i></span>
-              <label for="username" class="hidden">Username</label>
-              <input type="text" v-model="username" placeholder="Username*" required/>
-            </div>
             <div class="input_field">
               <span><i aria-hidden="true" class="fa fa-envelope"></i></span>
               <label for="email" class="hidden">Email</label>
@@ -26,34 +25,12 @@
                 required
               />
             </div>
-            <div class="input_field">
-              <span><i aria-hidden="true" class="fa fa-lock"></i></span>
-              <label for="conf-password" class="hidden">Confirm Password</label>
-              <input
-                type="password"
-                v-model="conf_password"
-                placeholder="Confirm Password*"
-                required
-              />
-            </div>
-            <div class="input_field">
-              <span><i aria-hidden="true" class="fa fa-globe"></i></span>
-              <label for="fav-city" class="hidden">Default City</label>
-              <input
-                type="text"
-                v-model="fav_city"
-                placeholder="Default City [Rome, Italy]"
-              />
-            </div>
-            <div class="row mandatory">
-              <p>(*) fields are mandatory!</p>
-            </div>
             <div class="row">
               <button type="button"
               class="button"
               :class="{button__loading: is_loading}"
               @click="form_handler">
-              <span class="button__text">Register</span>
+              <span class="button__text">Login</span>
               </button>
             </div>
 
@@ -61,21 +38,30 @@
       </div>
     </div>
     <p class="footer">
-      Already registered? <router-link to="/login">Login</router-link>
+      Not registered yet? <router-link to="/register">Sign up</router-link>
     </p>
   </div>
 </template>
 
 <script>
+import { ref } from 'vue'
+import Toast from '../components/ToastComponent'
 export default {
+  components: { Toast },
+  setup () {
+    const showToast = ref(false)
+
+    const triggerToast = () => {
+      showToast.value = true
+      setTimeout(() => { showToast.value = false }, 3000)
+    }
+    return { showToast, triggerToast }
+  },
   data () {
     return {
       is_loading: false,
-      username: '',
       email: '',
-      password: '',
-      conf_password: '',
-      fav_city: 'Rome, Italy'
+      password: ''
     }
   },
   methods: {
@@ -86,7 +72,7 @@ export default {
         console.log(this.username, this.email, this.password, this.conf_password, this.fav_city)
         setTimeout(() => {
           this.is_loading = false
-          alert('done...')
+          this.triggerToast()
         }, 2000)
       }
     }
@@ -330,4 +316,32 @@ body {
     }
   }
 }
+
+.toast {
+  z-index: 2;
+  position: fixed;
+}
+
+.toast-enter-from {
+  opacity: 0;
+  transform: translateY(-60px);
+}
+.toast-enter-to {
+  opacity: 1;
+  transform: translateY(0);
+}
+.toast-enter-active {
+  transition: all 0.3s ease;
+}
+.toast-leave-from {
+  opacity: 1;
+  transform: translateY(0px);
+}
+.toast-leave-to {
+  opacity: 0;
+  transform: translateY(-60px);
+}
+.toast-leave-active {
+  transition: all 0.3s ease;
+  }
 </style>
