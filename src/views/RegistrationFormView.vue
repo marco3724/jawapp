@@ -5,29 +5,23 @@
         <h2>jawapp Registration Form</h2>
       </div>
       <div class="row clearfix">
-        <div class="">
-          <form>
+        <div class="form">
             <div class="input_field">
               <span><i aria-hidden="true" class="fa fa-user"></i></span>
               <label for="username" class="hidden">Username</label>
-              <input
-                type="text"
-                name="username"
-                placeholder="Username*"
-                required
-              />
+              <input type="text" v-model="username" placeholder="Username*" required/>
             </div>
             <div class="input_field">
               <span><i aria-hidden="true" class="fa fa-envelope"></i></span>
               <label for="email" class="hidden">Email</label>
-              <input type="email" name="email" placeholder="Email*" required />
+              <input type="email" v-model="email" placeholder="Email*" required />
             </div>
             <div class="input_field">
               <span><i aria-hidden="true" class="fa fa-lock"></i></span>
               <label for="password" class="hidden">Password</label>
               <input
                 type="password"
-                name="password"
+                v-model="password"
                 placeholder="Password*"
                 required
               />
@@ -37,7 +31,7 @@
               <label for="conf-password" class="hidden">Confirm Password</label>
               <input
                 type="password"
-                name="conf-password"
+                v-model="conf_password"
                 placeholder="Confirm Password*"
                 required
               />
@@ -47,25 +41,27 @@
               <label for="fav-city" class="hidden">Default City</label>
               <input
                 type="text"
-                name="fav-city"
+                v-model="fav_city"
                 placeholder="Default City [Rome, Italy]"
               />
             </div>
             <div class="row mandatory">
               <p>(*) fields are mandatory!</p>
             </div>
-            <input
+            <div class="row">
+              <button type="button"
               class="button"
-              type="submit"
-              value="Register"
-              @click="form_handler"
-            />
-          </form>
+              :class="{button__loading: is_loading}"
+              @click="form_handler">
+              <span class="button__text">Register</span>
+              </button>
+            </div>
+
         </div>
       </div>
     </div>
     <p class="footer">
-      Already Registered? <a href="#" target="_blank">Login</a>
+      Already Registered? <router-link to="/login">Login</router-link>
     </p>
   </div>
 </template>
@@ -74,12 +70,25 @@
 export default {
   data () {
     return {
-      value: 12
+      is_loading: false,
+      username: '',
+      email: '',
+      password: '',
+      conf_password: '',
+      fav_city: 'Rome, Italy'
     }
   },
   methods: {
-    form_handler (event) {
-      console.log(event)
+    form_handler () {
+      const ok = true
+      if (ok) {
+        this.is_loading = true
+        console.log(this.username, this.email, this.password, this.conf_password, this.fav_city)
+        setTimeout(() => {
+          this.is_loading = false
+          alert('done...')
+        }, 2000)
+      }
     }
   },
   computed: {}
@@ -201,17 +210,21 @@ body {
       border: 1px solid $blue;
       background: #fafafa;
     }
-    &[type="submit"] {
+  }
+}
+.button {
       background: $blue;
-      height: 35px;
-      line-height: 35px;
-      width: 100%;
+      left: 15%;
+      padding: 8px 16px;
+      height: 45px;
+      width: 70%;
       border: none;
       outline: none;
+      border-radius: 2px;
       cursor: pointer;
       color: #fff;
       font-size: 1.1em;
-      margin-bottom: 10px;
+      position: relative;
       -webkit-transition: all 0.3s ease-in-out;
       -moz-transition: all 0.3s ease-in-out;
       -ms-transition: all 0.3s ease-in-out;
@@ -222,9 +235,45 @@ body {
       &:focus {
         background: darken($blue, 7%);
       }
+      &:active {
+        background: darken($blue, 40%);
+      }
     }
-  }
+.button__text {
+    font: bold 14px Verdana, Geneva, sans-serif;
+    color:#fff;
+    transition: all 0.2s;
 }
+.button__loading .button__text{
+    visibility: hidden;
+    opacity: 0;
+}
+.button__loading::after{
+    content: "";
+    position:absolute;
+    width: 1.75rem;
+    height: 1.75rem;
+    top:0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    border: 4px solid transparent;
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: button-loading-spinner 1.5s ease infinite;
+}
+
+@keyframes button-loading-spinner {
+    from {
+        transform: rotate(0.25turn);
+    }
+
+    to {
+        transform: rotate(2.25turn);
+    }
+}
+
 .form_container {
   .row {
     .col_half.last {
