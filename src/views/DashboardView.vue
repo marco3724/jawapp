@@ -122,7 +122,7 @@
 
 <script>
 
-import WeatherChart from './components/WeatherChart'
+import WeatherChart from '../components/WeatherChart'
 export default {
   components: {
     WeatherChart
