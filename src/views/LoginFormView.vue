@@ -1,9 +1,6 @@
 <template>
 
   <div class="form_wrapper">
-  <transition name="toast">
-  <Toast v-if="showToast"/>
-  </transition>
     <div class="form_container">
       <div class="title_container">
         <h2>Welcome Back!</h2>
@@ -44,18 +41,10 @@
 </template>
 
 <script>
-import { ref } from 'vue'
-import Toast from '../components/ToastComponent'
+import { mapMutations } from 'vuex'
+import http from '../http-common'
 export default {
-  components: { Toast },
   setup () {
-    const showToast = ref(false)
-
-    const triggerToast = () => {
-      showToast.value = true
-      setTimeout(() => { showToast.value = false }, 3000)
-    }
-    return { showToast, triggerToast }
   },
   data () {
     return {
@@ -64,16 +53,39 @@ export default {
       password: ''
     }
   },
+
   methods: {
+    ...mapMutations(['login']),
     form_handler () {
       const ok = true
       if (ok) {
         this.is_loading = true
-        console.log(this.username, this.email, this.password, this.conf_password, this.fav_city)
-        setTimeout(() => {
-          this.is_loading = false
-          this.triggerToast()
-        }, 2000)
+        const data = {
+          email: this.email,
+          password: this.password
+        }
+        console.log(data)
+        http.post('auth/login', data)
+          .then(res => {
+            console.log(res.data)
+            this.$toast.success(
+              'Welcome back ' + (res.data.username || 'Anonymous') + '!')
+            this.is_loading = false
+            localStorage.accessToken = res.data.accessToken
+            sessionStorage.accessToken = res.data.accessToken
+            this.login()
+            this.$router.push({ name: 'dashboard' })
+          })
+          .catch(res => {
+            this.$toast.open({
+              message: res.response.data.message,
+              type: res.response.status === 401 ? 'info' : res.status === 404 ? 'warning' : 'error'
+            })
+            // console.log(res.response.data)
+          })
+          .finally(() => { this.is_loading = false })
+      } else {
+        this.$toast.warning('email or password format not correct!')
       }
     }
   },
