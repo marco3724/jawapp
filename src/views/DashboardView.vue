@@ -228,8 +228,8 @@ export default {
 
       const progressValue = [0, 0, 0, 0]// in percentuale
       const progressEndValue = [this.current.wind_speed, this.current.humidity, this.current.pressure - 990, this.current.uvi]// non in percentuale [( ho messo alla pressure un offest di 990)]
-      const maxvalues = [30, 100, 35, 11]// valore limite  che ogni parametro puo assumere
-      // 990-1025  e' il range della pressione
+      const maxvalues = [30, 100, 60, 11]// valore limite  che ogni parametro puo assumere
+      // 990-1050  e' il range della pressione
       // 0-11 range dell uv
       // 0-30 metri al secondo (30 pericolo)
       const speed = 30
