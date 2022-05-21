@@ -67,6 +67,7 @@
 </template>
 
 <script>
+import http from '../http-common'
 export default {
   data () {
     return {
@@ -81,13 +82,38 @@ export default {
   methods: {
     form_handler () {
       const ok = true
+      // TODO: check if variables are not null
+      // TODO: check if password and conf_password are correct
       if (ok) {
         this.is_loading = true
         console.log(this.username, this.email, this.password, this.conf_password, this.fav_city)
-        setTimeout(() => {
-          this.is_loading = false
-          alert('done...')
-        }, 2000)
+        const data = {
+          username: this.username,
+          email: this.email,
+          password: this.password,
+          favourites: [this.fav_city]
+        }
+        http.post('auth/register', data)
+          .then(res => {
+            console.log(res.data)
+            this.$toast.success(
+              'Successfully registered!')
+            this.is_loading = false
+            // localStorage.accessToken = res.data.accessToken
+            // sessionStorage.accessToken = res.data.accessToken
+            // this.login()
+            this.$router.push({ name: 'login' })
+          })
+          .catch(res => {
+            this.$toast.open({
+              message: res.response.data.message,
+              type: res.response.status === 401 ? 'info' : res.status === 404 ? 'warning' : 'error'
+            })
+            // console.log(res.response.data)
+          })
+          .finally(() => { this.is_loading = false })
+      } else {
+        this.$toast.warning('format not correct!')
       }
     }
   },

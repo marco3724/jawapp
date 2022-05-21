@@ -1,5 +1,5 @@
 <template>
-  <div >
+  <div>
         <div class="close" @click="closeMenu()"> <i class="fa-solid fa-xmark"></i></div>
         <div class="logo">
             <i class="fa-solid fa-atom"></i>
@@ -7,7 +7,7 @@
         </div>
         <div class="item">
             <i class="fa-solid fa-border-all"></i>
-            <span class="text"><router-link to="/"> Dashboard</router-link></span>
+            <span class="text"><router-link to="/">Dashboard</router-link></span>
         </div>
 
         <div class="item">
@@ -22,19 +22,15 @@
 
         <div class="item">
             <i class="fa-regular fa-thumbs-up"></i>
-            <span class="text"><router-link to="Review"> Review</router-link></span>
+            <span class="text"><router-link to="Review">Review</router-link></span>
         </div>
-        <div class="item">
+        <div class="item" v-if="!isLoggedIn">
             <i class="fa-solid fa-arrow-right-to-bracket"></i>
             <span class="text"><router-link to="/login">Login</router-link></span>
         </div>
-        <div class="item">
-            <i class="fa-solid fa-arrow-right-to-bracket"></i>
-            <span class="text"><router-link to="/register">Register</router-link></span>
-        </div>
-        <div class="item">
+        <div class="item" v-if="isLoggedIn">
             <i class="fa-solid fa-arrow-right-from-bracket"></i>
-            <span class="text"><router-link to="/">Logout</router-link></span>
+            <span class="text"><router-link to="/" @click="cleanAll">Logout</router-link></span>
         </div>
         <div class="item">
             <i class="fa-solid fa-gears"></i>
@@ -45,9 +41,12 @@
 </template>
 
 <script>
+import { mapGetters, mapMutations } from 'vuex'
 export default {
   data () {
-    return { isDebug: false }
+    return {
+      isDebug: false
+    }
   },
   created () {
     const url = new URLSearchParams(document.location.search)
@@ -57,9 +56,24 @@ export default {
       this.isDebug = false
     }
   },
+  computed: {
+    ...mapGetters(['isLoggedIn'])
+    // loggedIn () {
+    //  if (localStorage.getItem('accessToken') ||
+    //      sessionStorage.getItem('accessToken')) { this.isLoggedIn = true } else this.isLoggedIn = false
+    // }
+  },
   methods: {
+    ...mapMutations(['logout']),
     closeMenu () {
       this.$emit('closeMenu')
+    },
+    cleanAll () {
+      localStorage.clear()
+      sessionStorage.clear()
+      // this.$forceUpdate()
+      this.logout()
+      this.$toast.success('Logged out!')
     }
   }
 }

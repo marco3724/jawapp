@@ -13,6 +13,7 @@
 <script>
 
 import SideBar from '@/components/SideBar.vue'
+import { mapMutations } from 'vuex'
 
 export default {
   data () {
@@ -20,8 +21,15 @@ export default {
       menu: 'menu' // Stato di apertura del menu
     }
   },
+  created () {
+    if (localStorage.getItem('accessToken') ||
+          sessionStorage.getItem('accessToken')) this.login()
+  },
   components: {
     SideBar
+  },
+  methods: {
+    ...mapMutations(['login'])
   }
 }
 </script>
