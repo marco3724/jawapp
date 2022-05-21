@@ -3,47 +3,27 @@
   <div class="overview">
     <div class="title">Customer Review</div>
     <div class="media">
-        <div class="number">3,7</div>
+        <div class="number">{{media}}</div>
         <div class='stars'>
-        <i class="fa-solid fa-star"></i>
-        <i class="fa-solid fa-star"></i>
-        <i class="fa-solid fa-star"></i>
-        <i class="fa-regular fa-star-half-stroke"></i>
-        <i class="fa-regular fa-star"></i>
+            <div class="vote" v-for="index in 5" :key="index">
+              <div v-if="media>=index"><i class="fa-solid fa-star"></i></div>
+              <div v-else-if="media>=index-0.5"><i class="fa-solid fa-star-half-stroke"></i></div>
+              <div v-else> <i class="fa-regular fa-star"></i></div>
+            </div>
         </div>
-        <div class="total">15 review</div>
+        <div class="total">{{tot}} review</div>
     </div>
     <div class="votes">
         <div class="bars">
-          <div class="bar">
-            <label for="file">5: </label>
-            <div class="percentage-bar" id="bar5"></div>
-            <div class="perce">23%</div>
-            <div class="perce-number">23%</div>
-          </div>
-                    <div class="bar">
-            <label for="file">5: </label>
-            <div class="percentage-bar" id="bar4"></div>
-                        <div class="perce">23%</div>
-            <div class="perce-number">23%</div>
-          </div>
-                    <div class="bar">
-            <label for="file">5: </label>
-            <div class="percentage-bar" id="bar3"></div>
-                        <div class="perce">23%</div>
-            <div class="perce-number">23%</div>
-          </div>
-                    <div class="bar">
-            <label for="file">5: </label>
-            <div class="percentage-bar" id="bar2"></div>
-                        <div class="perce">23%</div>
-            <div class="perce-number">23%</div>
-          </div>
-                    <div class="bar">
-            <label for="file">5: </label>
-            <div class="percentage-bar" id="bar1"></div>
-                        <div class="perce">23%</div>
-            <div class="perce-number">23%</div>
+          <div class="bar" v-for="bar in percentage" :key="bar" :style="{'--perc1': percentage[4].p, '--perc2':percentage[3].p,'--perc3': percentage[2].p,'--perc4': percentage[1].p,'--perc5': percentage[0].p}">
+            <div class="left">
+            <label>{{bar.i}} </label>
+            <div class="percentage-bar" :id="id(bar.i)"></div>
+            </div>
+            <div class="value-container">
+              <div class="perce">{{bar.p}}</div>
+              <div class="perce-number">{{bar.n}}</div>
+            </div>
           </div>
         </div>
     </div>
@@ -64,9 +44,9 @@
   </div>
 </div>
 <div class="reviews" >
-  <div class="review" v-for="rev in reviews" :key="rev">
+  <div class="review" v-for="rev in reviews" :key="rev" >
     <div class="star">
-      <div class="vote" v-for="index in 5" :key="index">
+      <div class="vote" v-for="index in 5" :key="index" >
         <div v-if="rev.star>=index"><i class="fa-solid fa-star"></i></div>
         <div v-else> <i class="fa-regular fa-star"></i></div>
       </div>
@@ -83,7 +63,7 @@ export default {
     return {
       reviews: [
         {
-          star: 3,
+          star: 1,
           comment: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
         },
         {
@@ -91,11 +71,7 @@ export default {
           comment: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
         },
         {
-          star: 5,
-          comment: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
-        },
-        {
-          star: 5,
+          star: 4,
           comment: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
         },
         {
@@ -103,6 +79,10 @@ export default {
           comment: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
         },
         {
+          star: 3,
+          comment: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
+        },
+        {
           star: 5,
           comment: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
         }, {
@@ -116,6 +96,13 @@ export default {
           comment: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
         }, {
           star: 5,
+          comment: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
+        }, {
+          star: 3,
+          comment: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
+        },
+        {
+          star: 3,
           comment: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
         }
 
@@ -123,9 +110,37 @@ export default {
     }
   },
   methods: {
-
+    id (i) {
+      return 'bar' + i
+    }
   },
   computed: {
+    media () {
+      let m = 0
+      this.reviews.forEach(el => {
+        m += el.star
+      })
+      return (m / this.reviews.length).toFixed(1)
+    },
+    tot () {
+      return this.reviews.length
+    },
+    percentage () {
+      const n = [0, 0, 0, 0, 0]
+      const obj = []
+      this.reviews.forEach(rev => {
+        n[rev.star - 1]++
+      })
+      for (let i = 4; i >= 0; i--) {
+        obj.push({
+          i: i + 1,
+          n: n[i],
+          p: (n[i] / this.reviews.length * 100).toFixed(1) + '%'
+        })
+      }
+      return obj
+    }
+
   }
 }
 </script>
@@ -162,6 +177,7 @@ gap: 1em;
 }
 .stars{
   align-self:center;
+  display: flex;
 }
 .total{
   align-self:center;
@@ -174,12 +190,22 @@ gap: 1em;
 }
 label{
   align-self: center;
+  font-weight: bold;
 }
 .bar{
+  display: grid;
+  gap: 0.5em;
+  grid-template-columns: 2fr 0.2fr;
+}
+.left{
   display: flex;
   gap: 0.5em;
 }
-
+.value-container{
+  display: flex;
+  justify-content: space-between;
+  gap:0.5em;
+}
 .percentage-bar{
 position: relative;
 background-color:#E1EDFE ;
@@ -193,25 +219,31 @@ position: absolute;
 content: '';
 height: 100%;
 }
+.perce{
+  font-weight: bold;
+}
+.perce-number{
+  color:#9FA7B4;
+}
 #bar5::after{
   background:linear-gradient(#02aab0, #00cdac);
-  width: 70%;
+  width: var(--perc5);
 }
 #bar4::after{
   background:linear-gradient(#56ab2f , #a8e063);
-  width: 15%;
+  width:var(--perc4);
 }
 #bar3::after{
 background-image: linear-gradient(315deg, #fbb034 0%, #ffdd00 74%);;
-width: 8%;
+width: var(--perc3);
 }
 #bar2::after{
   background:linear-gradient(#ff9966 , #ff5e62);
-  width: 2%;
+  width: var(--perc2);
 }
 #bar1::after{
   background:linear-gradient(#ff512f , #dd2476);
-  width: 5%;
+  width: var(--perc1);
 }
 .form{
   display:grid;
@@ -257,6 +289,11 @@ background: #bdc3c7;
 @media (max-width:1024px){
     .overview{
       margin-top: 2em;
+    }
+}
+@media (max-width:800px){
+    .reviews{
+      overflow:visible;
     }
 }
 

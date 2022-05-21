@@ -190,7 +190,7 @@ export default {
           this.daily.push(data.daily[i])
         }
         this.charts()
-        console.log(data)
+        // console.log(data)
       } catch (e) {
         alert('citta non trovata' + e)
       }
