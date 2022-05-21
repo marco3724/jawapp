@@ -84,6 +84,7 @@ export default {
     box-sizing: border-box;
     border-right: 1px solid #A7A9A9;
     height: 100%;
+    min-height: 100vh;
 
 }
 .menu-open{
@@ -135,6 +136,10 @@ export default {
 }
 
 @media (max-width:1000px){
+    html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
     .menu{
         position: fixed;
         left: -100%;
