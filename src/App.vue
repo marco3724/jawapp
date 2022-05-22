@@ -52,7 +52,10 @@ body{
     display: grid;
     grid-template-columns: 3fr 2fr;
 }
-
+.contentF{
+    display: grid;
+    grid-template-columns: 1fr;
+}
 .abs-lft{
     position: absolute;
     font-size: 1.2em;

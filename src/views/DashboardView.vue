@@ -151,6 +151,7 @@ export default {
     }
   },
   mounted () {
+
   },
   methods: {
     async searchByCity () {
@@ -495,8 +496,14 @@ position: relative;
 
 @media(max-width:600px){
     .current{
-        padding: 0;
+        height: auto;
+    }
+    .current,.forecast{
+        padding: 1em;
         margin: 0;
+    }
+    .main{
+           grid-template-columns: 1fr;
     }
 
     .daily, .hourly, .week{

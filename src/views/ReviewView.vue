@@ -114,6 +114,9 @@ export default {
       return 'bar' + i
     }
   },
+  mounted () {
+
+  },
   computed: {
     media () {
       let m = 0

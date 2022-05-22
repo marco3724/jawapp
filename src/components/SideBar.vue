@@ -17,7 +17,7 @@
 
         <div class="item">
             <i class="fa-regular fa-star"></i>
-            <span class="text"><router-link to="/">Favourites</router-link></span>
+            <span class="text"><router-link to="/favourites">Favourites</router-link></span>
         </div>
 
         <div class="item">
@@ -135,11 +135,11 @@ export default {
     color: #0F1621 ;
 }
 
-@media (max-width:1000px){
+@media (max-width:1024px){
     html, body {
-    max-width: 100%;
-    overflow-x: hidden;
-}
+        max-width: 100%;
+        overflow-x: hidden;
+    }
     .menu{
         position: fixed;
         left: -100%;
