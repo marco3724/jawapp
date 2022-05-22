@@ -128,7 +128,8 @@ export default {
     WeatherChart
   },
   created () {
-    this.city = 'rome'
+    console.log(this.id)
+    this.city = this.$route.params.id || 'rome'
     this.searchByCity()
   },
   data () {

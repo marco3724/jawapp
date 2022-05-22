@@ -7,6 +7,11 @@ import ReviewView from '../views/ReviewView.vue'
 
 const routes = [
   {
+    path: '/dashboard/:id',
+    name: 'dashboard1',
+    component: DashboardView
+  },
+  {
     path: '/',
     name: 'dashboard',
     component: DashboardView
