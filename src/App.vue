@@ -78,7 +78,7 @@ body{
     font-size: 1.2em;
     padding:1em;
     display: none;
-      z-index: 10001;
+    z-index: 3;
 
 }
 .abs-lft:hover,.close:hover{
