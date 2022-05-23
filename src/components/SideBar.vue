@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <aside>
         <div class="close" @click="closeMenu()"> <i class="fa-solid fa-xmark"></i></div>
         <div class="logo">
             <i class="fa-solid fa-atom"></i>
@@ -7,37 +7,37 @@
         </div>
         <div class="item">
             <i class="fa-solid fa-border-all"></i>
-            <span class="text"><router-link to="/">Dashboard</router-link></span>
+            <span class="text" @click="openRoute('/')">Dashboard</span>
         </div>
 
         <div class="item">
             <i class="fa-regular fa-map"></i>
-            <span class="text"><router-link to="/map">Map</router-link></span>
+            <span class="text" @click="openRoute('/map')">Map</span>
         </div>
 
         <div class="item">
             <i class="fa-regular fa-star"></i>
-            <span class="text"><router-link to="/favourites">Favourites</router-link></span>
+            <span class="text" @click="openRoute('/favourites')">Favourites</span>
         </div>
 
         <div class="item">
             <i class="fa-regular fa-thumbs-up"></i>
-            <span class="text"><router-link to="/Review">Review</router-link></span>
+            <span class="text" @click="openRoute('/review')">Review</span>
         </div>
         <div class="item" v-if="!isLoggedIn">
             <i class="fa-solid fa-arrow-right-to-bracket"></i>
-            <span class="text"><router-link to="/login">Login</router-link></span>
+            <span class="text" @click="openRoute('/login')">Login</span>
         </div>
         <div class="item" v-if="isLoggedIn">
             <i class="fa-solid fa-arrow-right-from-bracket"></i>
-            <span class="text"><router-link to="/" @click="cleanAll">Logout</router-link></span>
+            <span class="text" @click="localLogout('/')">Logout</span>
         </div>
         <div class="item">
             <i class="fa-solid fa-gears"></i>
-            <span class="text"><router-link to="/">Debug</router-link></span>
+            <span class="text" @click="openRoute('/')">Debug</span>
         </div>
 
-    </div>
+    </aside>
 </template>
 
 <script>
@@ -74,6 +74,14 @@ export default {
       // this.$forceUpdate()
       this.logout()
       this.$toast.success('Logged out!')
+    },
+    openRoute (route) {
+      this.$router.push(route)
+      this.closeMenu()
+    },
+    localLogout (route) {
+      this.openRoute(route)
+      this.cleanAll()
     }
   }
 }
