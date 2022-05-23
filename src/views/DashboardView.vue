@@ -262,7 +262,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 
 /*main*/
 
@@ -355,9 +355,18 @@ padding: 1em;
     display: grid;
     grid-template-columns: 1fr 1fr;
     margin-top: 2em;
-
     margin-bottom: 2em;
-    gap:2em;
+    gap: 2em;
+
+}
+
+@media(max-width:800px){
+    .other-info{
+        grid-template-columns: 1fr;
+        gap: 1em;
+        margin-top: 2em;
+        margin-bottom: 0;
+    }
 }
 
 .info{
@@ -422,6 +431,7 @@ padding: 1em;
     display: flex;
     flex-direction: column;
 }
+
 .title{
     font-size: 2em;
     padding: 1em;
