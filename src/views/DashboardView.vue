@@ -12,8 +12,8 @@
       <div class="main-info">
         <div class="location">
                     <span class="city">
-                        <i class="fa-solid fa-star" id='fav' v-if="isFavourite"></i>
-                        <i class="fa-solid fa-star" id='fav' v-else></i>
+                        <i class="fa-solid fa-star" id='fav' @click="removeFav(fullCity)" v-if="favWrap"></i>
+                        <i class="fa-regular fa-star" id='fav' @click="addFav(fullCity)" v-else></i>
                         <i class="fa-solid fa-location-dot"></i> {{fullCity}}
                     </span>
           <span class="date">{{ date(null) }}</span>
@@ -134,6 +134,7 @@ export default {
         'x-access-token': localStorage.getItem('accessToken')
       }
     }).then(res => {
+      this.favourites = res.data.favourites
       this.city = this.$route.query.city || res.data.favourites[0] || 'Rome'
       this.searchByCity()
     }).catch(err => {
@@ -158,7 +159,8 @@ export default {
       hourly: [],
       daily: [],
       key: '80b42f8e53b81f545a7268529925647e',
-      favourites: []
+      favourites: [],
+      fav: false
     }
   },
   mounted () { },
@@ -207,6 +209,8 @@ export default {
           this.daily.push(data.daily[i])
         }
         this.charts()
+        this.fav = this.isFavourite()
+        console.log(this.fav)
         // console.log(data)
       } catch (e) {
         // this.$toast.warning('citta non trovata\n' + e)
@@ -294,11 +298,45 @@ export default {
           }
         }, speed)
       }
+    },
+    isFavourite () {
+      return this.favourites.some(el =>
+        el.split(',')[0].toLowerCase().includes(this.city.split(',')[0].toLowerCase())
+      )
+    },
+    addFav (city) {
+      if (!this.favourites.includes(city)) {
+        this.favourites.push(city)
+        http.post('user/update', { favourites: this.favourites }, {
+          headers: {
+            'x-access-token': localStorage.getItem('accessToken')
+          }
+        }).then(res => {
+          console.log('success')
+        })
+          .catch(err => console.log(err))
+      }
+    },
+    removeFav (city) {
+      this.favourites = this.favourites.filter(c => c !== city)
+      // console.log(this.cities)
+      http.post('user/update', { favourites: this.favourites }, {
+        headers: {
+          'x-access-token': localStorage.getItem('accessToken')
+        }
+      }).then(res => {
+        console.log('success')
+      })
+        .catch(err => console.log(err))
     }
+
   },
   computed: {
     fullCity () {
       return this.location.name + ', ' + this.location.country
+    },
+    favWrap () {
+      return this.fav
     }
   }
 }
@@ -359,11 +397,13 @@ export default {
   grid-template-rows: 1fr 3fr 1fr;
   padding: 1em;
 }
-
+#fav{
+    color: rgb(255, 187, 0);
+    margin-right: 0.5em;
+    font-size: 1.5em;
+}
 #fav:hover{
     cursor: pointer;
-    color: aqua;
-
 }
 .temperature{
     position: relative;

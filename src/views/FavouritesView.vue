@@ -85,9 +85,9 @@ export default {
   },
   methods: {
     remove (city) {
-      console.log(this.cities)
+      // console.log(this.cities)
       this.cities = this.cities.filter(c => c.split(',')[0].toLowerCase() !== city.toLowerCase())
-      console.log(this.cities)
+      // console.log(this.cities)
       http.post('user/update', { favourites: this.cities }, {
         headers: {
           'x-access-token': localStorage.getItem('accessToken')
