@@ -10,36 +10,36 @@
       <i class="fa-solid fa-atom"></i>
       <span class="text">JAWA</span>
     </div>
-    <div class="item">
+    <div class="item" @click="openRoute('/')">
       <i class="fa-solid fa-border-all"></i>
-      <span class="text" @click="openRoute('/')">Dashboard</span>
+      <span class="text">Dashboard</span>
     </div>
 
-    <div class="item">
+    <div class="item" @click="openRoute('/map')">
       <i class="fa-regular fa-map"></i>
-      <span class="text" @click="openRoute('/map')">Map</span>
+      <span class="text">Map</span>
     </div>
 
-    <div class="item">
+    <div class="item" @click="openRoute('/favourites')">
       <i class="fa-regular fa-star"></i>
-      <span class="text" @click="openRoute('/favourites')">Favourites</span>
+      <span class="text">Favourites</span>
     </div>
 
-    <div class="item">
+    <div class="item" @click="openRoute('/review')">
       <i class="fa-regular fa-thumbs-up"></i>
-      <span class="text" @click="openRoute('/review')">Review</span>
+      <span class="text">Review</span>
     </div>
-    <div class="item" v-if="!isLoggedIn">
+    <div class="item" @click="openRoute('/login')" v-if="!isLoggedIn">
       <i class="fa-solid fa-arrow-right-to-bracket"></i>
-      <span class="text" @click="openRoute('/login')">Login</span>
+      <span class="text">Login</span>
     </div>
-    <div class="item" v-if="isLoggedIn">
+    <div class="item" @click="localLogout('/')" v-if="isLoggedIn">
       <i class="fa-solid fa-arrow-right-from-bracket"></i>
-      <span class="text" @click="localLogout('/')">Logout</span>
+      <span class="text">Logout</span>
     </div>
-    <div class="item">
+    <div class="item" @click="openRoute('/')">
       <i class="fa-solid fa-gears"></i>
-      <span class="text" @click="openRoute('/')">Debug</span>
+      <span class="text">Debug</span>
     </div>
   </aside>
 </template>

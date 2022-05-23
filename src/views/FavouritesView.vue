@@ -15,7 +15,7 @@
                         </div>
                     </div>
                     <router-link style="text-decoration: none; color: inherit"
-                        :to="{ name: 'dashboard1', params: { id: w.name } }">
+                        :to="{ name: 'dashboard', query: { city: w.name } }">
                         <div class="name">{{ w.name }}</div>
                         <div class="icon">
                             <img :src="
