@@ -22,7 +22,7 @@
 
         <div class="item">
             <i class="fa-regular fa-thumbs-up"></i>
-            <span class="text"><router-link to="Review">Review</router-link></span>
+            <span class="text"><router-link to="/Review">Review</router-link></span>
         </div>
         <div class="item" v-if="!isLoggedIn">
             <i class="fa-solid fa-arrow-right-to-bracket"></i>

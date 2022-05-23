@@ -4,33 +4,33 @@
         <div class="header">
             <form class="search-bar" @submit.prevent="searchByCity">
                 <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" placeholder="Search city" >
+                <input type="text" placeholder="Search city" v-model="city">
             </form>
         </div>
         <div class="cities">
-            <div class="city" v-for="w in weathers" :key="w">
-                <router-link  :to="{ name: 'dashboard1', params: { id: w.name }}">
-                <div class="name">{{w.name}}</div>
-                <div class="icon"><img src="https://openweathermap.org/img/wn/01n.png" alt=""/> </div>
-                <div class="temp">
-                    <div class="degree">{{w.main.temp.toFixed(0)}}°C</div>
-                    <div class="description">{{w.weather[0].description}}</div>
-                    <div class="minmax">
-                        <div class="min"><i class="fa-solid fa-arrow-down"></i> {{w.main.temp_min.toFixed(0)}}°C</div>
-                        <div class="max"><i class="fa-solid fa-arrow-up"></i> {{w.main.temp_max.toFixed(0)}}°C</div>
+            <div class="city" v-for="w in weathersFilter" :key="w">
+                <router-link  style="text-decoration:none;color:inherit;" :to="{ name: 'dashboard1', params: { id: w.name }}">
+                    <div class="name">{{w.name}}</div>
+                    <div class="icon"><img :src="'https://openweathermap.org/img/wn/'+w.weather[0].icon+'.png'" alt=""/> </div>
+                    <div class="temp">
+                        <div class="degree">{{w.main.temp.toFixed(0)}}°C</div>
+                        <div class="description">{{w.weather[0].description}}</div>
+                        <div class="minmax">
+                            <div class="min"><i class="fa-solid fa-arrow-down"></i> {{w.main.temp_min.toFixed(0)}}°C</div>
+                            <div class="max"><i class="fa-solid fa-arrow-up"></i> {{w.main.temp_max.toFixed(0)}}°C</div>
+                        </div>
                     </div>
-                </div>
 
-                <div class="other">
-                    <div class="like">
-                        <div class="number">{{w.main.feels_like.toFixed(0)}}</div>
-                        <div class="description">feels like</div>
+                    <div class="other">
+                        <div class="like">
+                            <div class="number">{{w.main.feels_like.toFixed(0)}}</div>
+                            <div class="description">feels like</div>
+                        </div>
+                        <div class="humidity">
+                            <div class="number">{{w.main.humidity.toFixed(0)}}%</div>
+                            <div class="description">humidity</div>
+                        </div>
                     </div>
-                    <div class="humidity">
-                        <div class="number">{{w.main.humidity.toFixed(0)}}%</div>
-                        <div class="description">humidity</div>
-                    </div>
-                </div>
                 </router-link>
             </div>
         </div>
@@ -51,14 +51,18 @@ export default {
   data () {
     return {
       key: '80b42f8e53b81f545a7268529925647e',
-      cities: ['London', 'Rome', 'New York'],
-      weathers: []
+      cities: ['London', 'Rome', 'New York', 'los angeles', 'milan', 'florence', 'wenzhou', 'san francisco', 'vieste', 'madrid', 'berlin'],
+      weathers: [],
+      city: ''
     }
   },
   methods: {
 
   },
   computed: {
+    weathersFilter () {
+      return this.weathers.filter(w => w.name.toLowerCase().includes(this.city.toLowerCase()))
+    }
   },
   beforeUnmount () {
     document.querySelector('.contentF').className = 'content'// ritorno stato iniziale
@@ -72,9 +76,6 @@ export default {
 /* .container{
 
 } */
-.city a {
-    text-decoration: none;
-    }
 .wrap{
     padding: 2em;
 }
@@ -112,7 +113,7 @@ export default {
 .cities{
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr) );
-    gap:2em
+    gap:2em;
 }
 .city{
     padding: 1em;
