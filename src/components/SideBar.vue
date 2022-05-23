@@ -1,48 +1,53 @@
 <template>
-  <aside>
-        <div class="close" @click="closeMenu()"> <i class="fa-solid fa-xmark"></i></div>
-        <div class="logo">
-            <i class="fa-solid fa-atom"></i>
-            <span class="text">JAWA</span>
-        </div>
-        <div class="item">
-            <i class="fa-solid fa-border-all"></i>
-            <span class="text" @click="openRoute('/')">Dashboard</span>
-        </div>
+  <Transition>
+    <div class="background" @click="closeMenu" v-if="menu"></div>
+  </Transition>
+  <aside :class="menu ? 'menu menu-open' : 'menu menu-close'">
+    <div class="close" @click="closeMenu">
+      <i class="fa-solid fa-xmark"></i>
+    </div>
+    <div class="logo">
+      <i class="fa-solid fa-atom"></i>
+      <span class="text">JAWA</span>
+    </div>
+    <div class="item">
+      <i class="fa-solid fa-border-all"></i>
+      <span class="text" @click="openRoute('/')">Dashboard</span>
+    </div>
 
-        <div class="item">
-            <i class="fa-regular fa-map"></i>
-            <span class="text" @click="openRoute('/map')">Map</span>
-        </div>
+    <div class="item">
+      <i class="fa-regular fa-map"></i>
+      <span class="text" @click="openRoute('/map')">Map</span>
+    </div>
 
-        <div class="item">
-            <i class="fa-regular fa-star"></i>
-            <span class="text" @click="openRoute('/favourites')">Favourites</span>
-        </div>
+    <div class="item">
+      <i class="fa-regular fa-star"></i>
+      <span class="text" @click="openRoute('/favourites')">Favourites</span>
+    </div>
 
-        <div class="item">
-            <i class="fa-regular fa-thumbs-up"></i>
-            <span class="text" @click="openRoute('/review')">Review</span>
-        </div>
-        <div class="item" v-if="!isLoggedIn">
-            <i class="fa-solid fa-arrow-right-to-bracket"></i>
-            <span class="text" @click="openRoute('/login')">Login</span>
-        </div>
-        <div class="item" v-if="isLoggedIn">
-            <i class="fa-solid fa-arrow-right-from-bracket"></i>
-            <span class="text" @click="localLogout('/')">Logout</span>
-        </div>
-        <div class="item">
-            <i class="fa-solid fa-gears"></i>
-            <span class="text" @click="openRoute('/')">Debug</span>
-        </div>
-
-    </aside>
+    <div class="item">
+      <i class="fa-regular fa-thumbs-up"></i>
+      <span class="text" @click="openRoute('/review')">Review</span>
+    </div>
+    <div class="item" v-if="!isLoggedIn">
+      <i class="fa-solid fa-arrow-right-to-bracket"></i>
+      <span class="text" @click="openRoute('/login')">Login</span>
+    </div>
+    <div class="item" v-if="isLoggedIn">
+      <i class="fa-solid fa-arrow-right-from-bracket"></i>
+      <span class="text" @click="localLogout('/')">Logout</span>
+    </div>
+    <div class="item">
+      <i class="fa-solid fa-gears"></i>
+      <span class="text" @click="openRoute('/')">Debug</span>
+    </div>
+  </aside>
 </template>
 
 <script>
 import { mapGetters, mapMutations } from 'vuex'
 export default {
+  props: { menu: { type: Boolean, default: false } },
   data () {
     return {
       isDebug: false
@@ -58,10 +63,6 @@ export default {
   },
   computed: {
     ...mapGetters(['isLoggedIn'])
-    // loggedIn () {
-    //  if (localStorage.getItem('accessToken') ||
-    //      sessionStorage.getItem('accessToken')) { this.isLoggedIn = true } else this.isLoggedIn = false
-    // }
   },
   methods: {
     ...mapMutations(['logout']),
@@ -88,81 +89,107 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.menu{
-    box-sizing: border-box;
-    border-right: 1px solid #A7A9A9;
-    height: 100%;
-    min-height: 100vh;
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.2s ease;
+}
 
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
 }
-.menu-open{
-    left: 0%!important;
-}
-.menu-close{
-    left: -100%!important;
-}
-.menu>*{
-    padding: 1em;
 
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    color: #A7A9A9;
-
+.background {
+  background-color: rgba(black, 0.4);
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  z-index: 10000;
 }
-.close{
-    display: none;
-    font-size: 1.5em;
-    position: relative;
 
+.menu {
+  box-sizing: border-box;
+  border-right: 1px solid #a7a9a9;
+  height: 100%;
+  min-height: 100vh;
+
+  @media (max-width: 1024px) {
+    position: fixed;
+    left: -100%;
+    background-color: white;
+    z-index: 10001;
+    border-right: none;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
+    width: 50%;
+    transition: left 200ms;
+  }
 }
+
+.menu-open {
+  left: 0% !important;
+}
+
+.menu-close {
+  left: -100% !important;
+}
+
+.menu>* {
+  padding: 1em;
+
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  color: #a7a9a9;
+}
+
+.close {
+  display: none;
+  font-size: 1.5em;
+  position: relative;
+}
+
 .close i {
-    color: #0F1621;
-    position: relative;
+  color: #0f1621;
+  position: relative;
+}
 
+.text a {
+  font-weight: bold;
+  text-decoration: none;
+  color: #a7a9a9;
 }
-.text a{
-    font-weight: bold;
-    text-decoration: none;
-    color: #A7A9A9;
+
+.logo {
+  color: #0f1621;
+  font-size: 1.5em;
+  font-weight: bolder;
 }
-.logo{
-    color:#0F1621;
-    font-size: 1.5em;
-    font-weight: bolder;
+
+.item {
+  margin-top: 1em;
+  margin-left: 1em;
+  border-left: white 2px solid;
 }
-.item{
-    margin-top: 1em;
-    margin-left: 1em;
-    border-left: white 2px solid;
+
+.item:hover {
+  color: #0f1621;
+  border-left: #0f1621 2px solid;
 }
-.item:hover{
-   color: #0F1621 ;
-   border-left: #0F1621 2px solid;
-}
+
 .item:hover a {
-    color: #0F1621 ;
+  color: #0f1621;
 }
 
-@media (max-width:1024px){
-    html, body {
-        max-width: 100%;
-        overflow-x: hidden;
-    }
-    .menu{
-        position: fixed;
-        left: -100%;
-        background-color: white;
-        z-index: 99;
-        border-right: none;
-        box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
-        width: 50%;
-        transition:left 200ms;
-    }
-    .close{
+@media (max-width: 1024px) {
 
-        display:flex;
-        justify-content: flex-end;
+  html,
+  body {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
 
-    }
+  .close {
+    display: flex;
+    justify-content: flex-end;
+  }
 }
 </style>

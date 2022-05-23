@@ -1,9 +1,9 @@
 <template>
 
       <div class="wrapper" >
-        <side-bar :class="menu" @closeMenu="menu ='menu menu-close'"/>
+        <side-bar :menu="menu" @closeMenu="menu = false"/>
         <div class="content">
-            <div class="abs-lft" @click="menu ='menu menu-open'"><i class="fa-solid fa-bars"></i></div>
+            <div class="abs-lft" @click="menu = true"><i class="fa-solid fa-bars"></i></div>
             <router-view/>
         </div>
     </div>
@@ -13,13 +13,13 @@
 <script>
 
 import SideBar from '@/components/SideBar.vue'
-import { mapMutations } from 'vuex'
 import { Buffer } from 'buffer'
+import { mapMutations } from 'vuex'
 
 export default {
   data () {
     return {
-      menu: 'menu' // Stato di apertura del menu
+      menu: false // Stato di apertura del menu
     }
   },
   created () {
@@ -78,7 +78,7 @@ body{
     font-size: 1.2em;
     padding:1em;
     display: none;
-    z-index:3;
+      z-index: 10001;
 
 }
 .abs-lft:hover,.close:hover{
