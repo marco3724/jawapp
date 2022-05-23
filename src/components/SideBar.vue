@@ -1,67 +1,56 @@
 <template>
-  <div>
-        <div class="close" @click="closeMenu()"> <i class="fa-solid fa-xmark"></i></div>
-        <div class="logo">
-            <i class="fa-solid fa-atom"></i>
-            <span class="text">JAWA</span>
-        </div>
-        <div class="item">
-            <i class="fa-solid fa-border-all"></i>
-            <span class="text"><router-link to="/">Dashboard</router-link></span>
-        </div>
-
-        <div class="item">
-            <i class="fa-regular fa-map"></i>
-            <span class="text"><router-link to="/map">Map</router-link></span>
-        </div>
-
-        <div class="item">
-            <i class="fa-regular fa-star"></i>
-            <span class="text"><router-link to="/favourites">Favourites</router-link></span>
-        </div>
-
-        <div class="item">
-            <i class="fa-regular fa-thumbs-up"></i>
-            <span class="text"><router-link to="/Review">Review</router-link></span>
-        </div>
-        <div class="item" v-if="!isLoggedIn">
-            <i class="fa-solid fa-arrow-right-to-bracket"></i>
-            <span class="text"><router-link to="/login">Login</router-link></span>
-        </div>
-        <div class="item" v-if="isLoggedIn">
-            <i class="fa-solid fa-arrow-right-from-bracket"></i>
-            <span class="text"><router-link to="/" @click="cleanAll">Logout</router-link></span>
-        </div>
-        <div class="item">
-            <i class="fa-solid fa-gears"></i>
-            <span class="text"><router-link to="/">Debug</router-link></span>
-        </div>
-
+  <Transition>
+    <div class="background" @click="closeMenu" v-if="menu"></div>
+  </Transition>
+  <aside :class="menu ? 'menu menu-open' : 'menu menu-close'">
+    <div class="close" @click="closeMenu">
+      <i class="fa-solid fa-xmark"></i>
     </div>
+    <div class="logo">
+      <i class="fa-solid fa-atom"></i>
+      <span class="text">JAWApp</span>
+    </div>
+
+    <router-link to="/" @click="closeMenu" class="item">
+      <i class="fa-solid fa-border-all"></i>
+      <span class="text">Dashboard</span>
+    </router-link>
+
+    <router-link to="/map" @click="closeMenu" class="item">
+      <i class="fa-regular fa-map"></i>
+      <span class="text">Map</span>
+    </router-link>
+
+    <router-link to="/favourites" @click="closeMenu" class="item">
+      <i class="fa-regular fa-star"></i>
+      <span class="text">Favourites</span>
+    </router-link>
+
+    <router-link to="/review" @click="closeMenu" class="item">
+      <i class="fa-regular fa-thumbs-up"></i>
+      <span class="text">Review</span>
+    </router-link>
+
+    <router-link to="/" @click="localLogout" class="item" v-if="isLoggedIn">
+      <i class="fa-solid fa-arrow-right-from-bracket"></i>
+      <span class="text">Logout</span>
+    </router-link>
+
+    <router-link to="/login" @click="closeMenu" class="item" v-else>
+      <i class="fa-solid fa-arrow-right-to-bracket"></i>
+      <span class="text">Login</span>
+    </router-link>
+
+  </aside>
 </template>
 
 <script>
 import { mapGetters, mapMutations } from 'vuex'
 export default {
-  data () {
-    return {
-      isDebug: false
-    }
-  },
-  created () {
-    const url = new URLSearchParams(document.location.search)
-    if (url.get('debug') === 'true') {
-      this.isDebug = true
-    } else {
-      this.isDebug = false
-    }
-  },
+  props: { menu: { type: Boolean, default: false } },
+  emits: ['closeMenu'],
   computed: {
     ...mapGetters(['isLoggedIn'])
-    // loggedIn () {
-    //  if (localStorage.getItem('accessToken') ||
-    //      sessionStorage.getItem('accessToken')) { this.isLoggedIn = true } else this.isLoggedIn = false
-    // }
   },
   methods: {
     ...mapMutations(['logout']),
@@ -74,87 +63,118 @@ export default {
       // this.$forceUpdate()
       this.logout()
       this.$toast.success('Logged out!')
+    },
+    localLogout () {
+      this.closeMenu()
+      this.cleanAll()
     }
   }
 }
 </script>
 
 <style scoped lang="scss">
-.menu{
-    box-sizing: border-box;
-    border-right: 1px solid #A7A9A9;
-    height: 100%;
-    min-height: 100vh;
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.2s ease;
+}
 
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
 }
-.menu-open{
-    left: 0%!important;
-}
-.menu-close{
-    left: -100%!important;
-}
-.menu>*{
-    padding: 1em;
 
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    color: #A7A9A9;
-
+.background {
+  background-color: rgba(black, 0.4);
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  z-index: 10000;
 }
-.close{
-    display: none;
-    font-size: 1.5em;
-    position: relative;
 
+.menu {
+  box-sizing: border-box;
+  border-right: 1px solid #a7a9a9;
+  height: 100%;
+  min-height: 100vh;
+
+  @media (max-width: 1024px) {
+    position: fixed;
+    left: -100%;
+    background-color: white;
+    z-index: 10001;
+    border-right: none;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
+    width: 50%;
+    transition: left 200ms;
+  }
 }
+
+.menu-open {
+  left: 0% !important;
+}
+
+.menu-close {
+  left: -100% !important;
+}
+
+.menu>* {
+  padding: 1em;
+
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  color: #a7a9a9;
+}
+
+.close {
+  display: none;
+  font-size: 1.5em;
+  position: relative;
+}
+
 .close i {
-    color: #0F1621;
-    position: relative;
+  color: #0f1621;
+  position: relative;
+}
 
+.text a {
+  font-weight: bold;
+  text-decoration: none;
+  color: #a7a9a9;
 }
-.text a{
-    font-weight: bold;
-    text-decoration: none;
-    color: #A7A9A9;
+
+.logo {
+  color: #0f1621;
+  font-size: 1.5em;
+  font-weight: bolder;
 }
-.logo{
-    color:#0F1621;
-    font-size: 1.5em;
-    font-weight: bolder;
+
+.item {
+  margin-top: 1em;
+  margin-left: 1em;
+  border-left: white 2px solid;
+  text-decoration: none;
 }
-.item{
-    margin-top: 1em;
-    margin-left: 1em;
-    border-left: white 2px solid;
+
+.item:hover {
+  color: #0f1621;
+  border-left: #0f1621 2px solid;
 }
-.item:hover{
-   color: #0F1621 ;
-   border-left: #0F1621 2px solid;
-}
+
 .item:hover a {
-    color: #0F1621 ;
+  color: #0f1621;
 }
 
-@media (max-width:1024px){
-    html, body {
-        max-width: 100%;
-        overflow-x: hidden;
-    }
-    .menu{
-        position: fixed;
-        left: -100%;
-        background-color: white;
-        z-index: 99;
-        border-right: none;
-        box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
-        width: 50%;
-        transition:left 200ms;
-    }
-    .close{
+@media (max-width: 1024px) {
 
-        display:flex;
-        justify-content: flex-end;
+  html,
+  body {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
 
-    }
+  .close {
+    display: flex;
+    justify-content: flex-end;
+  }
 }
 </style>

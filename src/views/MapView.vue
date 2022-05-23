@@ -99,8 +99,4 @@ export default {
 </script>
 
 <style scoped >
-    #map {
-      height: 800px;
-      width: 800px;
-    }
 </style>

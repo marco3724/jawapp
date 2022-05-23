@@ -1,9 +1,9 @@
 <template>
 
       <div class="wrapper" >
-        <side-bar :class="menu" @closeMenu="menu ='menu menu-close'"/>
+        <side-bar :menu="menu" @closeMenu="menu = false"/>
         <div class="content">
-            <div class="abs-lft" @click="menu ='menu menu-open'"><i class="fa-solid fa-bars"></i></div>
+            <div class="abs-lft" @click="menu = true"><i class="fa-solid fa-bars"></i></div>
             <router-view/>
         </div>
     </div>
@@ -13,17 +13,34 @@
 <script>
 
 import SideBar from '@/components/SideBar.vue'
+import { Buffer } from 'buffer'
 import { mapMutations } from 'vuex'
 
 export default {
   data () {
     return {
-      menu: 'menu' // Stato di apertura del menu
+      menu: false // Stato di apertura del menu
     }
   },
   created () {
+    // Logout if token is expired
     if (localStorage.getItem('accessToken') ||
-          sessionStorage.getItem('accessToken')) this.login()
+          sessionStorage.getItem('accessToken')) {
+      const token = localStorage.getItem('accessToken') || sessionStorage.getItem('accessToken')
+
+      const base64Url = token.split('.')[1]
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/')
+      const jsonPayload = Buffer.from(base64, 'base64')
+
+      const jwtPayload = JSON.parse(jsonPayload)
+      console.log(jwtPayload)
+      if (jwtPayload.exp < Date.now() / 1000) {
+        localStorage.clear()
+        sessionStorage.clear()
+      } else {
+        this.login()
+      }
+    };
   },
   components: {
     SideBar
@@ -61,7 +78,7 @@ body{
     font-size: 1.2em;
     padding:1em;
     display: none;
-    z-index:3;
+    z-index: 3;
 
 }
 .abs-lft:hover,.close:hover{
