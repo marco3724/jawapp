@@ -194,7 +194,8 @@ export default {
         this.charts()
         // console.log(data)
       } catch (e) {
-        alert('citta non trovata' + e)
+        // this.$toast.warning('citta non trovata\n' + e)
+        this.$toast.warning('citta non trovata\n')
       }
     },
     formatTime (time) {
@@ -291,7 +292,7 @@ export default {
 }
 
 .search-bar{
-   max-width: 350px;
+   max-width: minmax(350px, 80%);
     margin: auto;
     padding: 0.5em;
     border-radius: 10px;
