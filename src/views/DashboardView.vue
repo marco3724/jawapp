@@ -12,7 +12,11 @@
             <div class="main-info">
 
                 <div class="location">
-                    <span class="city"><i class="fa-solid fa-location-dot"></i> {{fullCity}}</span>
+                    <span class="city">
+                        <i class="fa-solid fa-star" id='fav' v-if="isFavourite"></i>
+                        <i class="fa-solid fa-star" id='fav' v-else></i>
+                        <i class="fa-solid fa-location-dot"></i> {{fullCity}}
+                    </span>
                     <span class="date">{{date(null)}}</span>
                 </div>
 
@@ -123,14 +127,25 @@
 <script>
 
 import WeatherChart from '../components/WeatherChart'
+import http from '../http-common'
 export default {
   components: {
     WeatherChart
   },
   created () {
-    console.log(this.id)
-    this.city = this.$route.params.id || 'rome'
-    this.searchByCity()
+    // console.log(this.id)
+    http.get('user/me', {
+      headers: {
+        'x-access-token': localStorage.getItem('accessToken')
+      }
+    }).then(res => {
+      this.city = this.$route.params.id || res.data.favourites[0] || 'rome'
+      this.searchByCity()
+    }).catch(err => {
+      this.city = this.$route.params.id || 'rome'
+      this.searchByCity()
+      console.log(err)
+    })
   },
   data () {
     return {
@@ -148,7 +163,8 @@ export default {
       },
       hourly: [],
       daily: [],
-      key: '80b42f8e53b81f545a7268529925647e'
+      key: '80b42f8e53b81f545a7268529925647e',
+      favourites: []
     }
   },
   mounted () {
@@ -315,6 +331,11 @@ grid-template-rows: 1fr 3fr 1fr;
 padding: 1em;
 }
 
+#fav:hover{
+    cursor: pointer;
+    color: aqua;
+
+}
 .temperature{
     position: relative;
 }

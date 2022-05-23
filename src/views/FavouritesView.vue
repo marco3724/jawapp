@@ -44,32 +44,50 @@
 </template>
 
 <script>
-
+import http from '../http-common'
 export default {
   created () {
     document.querySelector('.content').className = 'contentF'
-    this.cities.forEach(city => {
-      fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${this.key}`).then(response => response.json())
-        .then(data => this.weathers.push(data))
-    })
+    http.get('user/me', {
+      headers: {
+        'x-access-token': localStorage.getItem('accessToken')
+      }
+    }).then(res => {
+      console.log(res)
+      this.cities = res.data.favourites
+      this.cities.forEach(city => {
+        fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${this.key}`).then(response => response.json())
+          .then(data => this.weathers.push(data))
+      })
+    }).catch(err => console.log(err))
   },
   data () {
     return {
       key: '80b42f8e53b81f545a7268529925647e',
-      cities: ['London', 'Rome,it', 'New York', 'los angeles', 'milan', 'florence', 'wenzhou', 'san francisco', 'vieste', 'madrid', 'berlin', 'san jose'],
+      cities: [],
+      // ['London', 'Rome,it', 'New York', 'los angeles', 'milan', 'florence', 'wenzhou', 'san francisco', 'vieste', 'madrid', 'berlin', 'san jose']
       weathers: [],
       city: ''
     }
   },
   methods: {
     remove (city) {
-      this.cities = this.cities.filter(c => c.toLowerCase() !== city.toLowerCase())
-      this.weathers = this.weathers.filter(w => !w.name.toLowerCase().includes(city.toLowerCase()))
+      console.log(this.cities)
+      this.cities = this.cities.filter(c => c.split(',')[0].toLowerCase() !== city.toLowerCase())
+      console.log(this.cities)
+      http.post('user/update', { favourites: this.cities }, {
+        headers: {
+          'x-access-token': localStorage.getItem('accessToken')
+        }
+      }).then(res => {
+        this.weathers = this.weathers.filter(w => !w.name.toLowerCase().includes(city.toLowerCase()))
+      })
+        .catch(err => console.log(err))
     }
   },
   computed: {
     weathersFilter () {
-      console.log(this.weathers)
+      // console.log(this.weathers)
       return this.weathers.filter(w => w.name.toLowerCase().includes(this.city.toLowerCase()))
     }
   },

@@ -1,15 +1,24 @@
 <template>
  <h3>GoogleMapsApi</h3>
   <div style="height:100%; width:100%;">
-    <div id="map"></div>
+    {{currPos.lat.toFixed(2)}},   {{currPos.lng.toFixed(2)}}
   </div>
 </template>
 
 <script>
-
+import { computed } from '@vue/runtime-core'
+import { geoLocation } from '../geoLocation.js'
 export default {
   created () {
 
+  },
+  setup () {
+    const { coords } = geoLocation()
+    const currPos = computed(() => ({
+      lat: coords.value.latitude,
+      lng: coords.value.longitude
+    }))
+    return { currPos }
   },
   data () {
     return {
