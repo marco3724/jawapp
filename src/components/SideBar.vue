@@ -12,7 +12,7 @@
 
         <div class="item">
             <i class="fa-regular fa-map"></i>
-            <span class="text"><router-link to="/">Map</router-link></span>
+            <span class="text"><router-link to="/map">Map</router-link></span>
         </div>
 
         <div class="item">

@@ -9,6 +9,11 @@
         </div>
         <div class="cities">
             <div class="city" v-for="w in weathersFilter" :key="w">
+               <div>
+                    <div class="trash" @click="remove(w.name)" >
+                        <i class="fa-solid fa-trash-can"></i>
+                    </div>
+                </div>
                 <router-link  style="text-decoration:none;color:inherit;" :to="{ name: 'dashboard1', params: { id: w.name }}">
                     <div class="name">{{w.name}}</div>
                     <div class="icon"><img :src="'https://openweathermap.org/img/wn/'+w.weather[0].icon+'.png'" alt=""/> </div>
@@ -51,16 +56,20 @@ export default {
   data () {
     return {
       key: '80b42f8e53b81f545a7268529925647e',
-      cities: ['London', 'Rome', 'New York', 'los angeles', 'milan', 'florence', 'wenzhou', 'san francisco', 'vieste', 'madrid', 'berlin'],
+      cities: ['London', 'Rome,it', 'New York', 'los angeles', 'milan', 'florence', 'wenzhou', 'san francisco', 'vieste', 'madrid', 'berlin', 'san jose'],
       weathers: [],
       city: ''
     }
   },
   methods: {
-
+    remove (city) {
+      this.cities = this.cities.filter(c => c.toLowerCase() !== city.toLowerCase())
+      this.weathers = this.weathers.filter(w => !w.name.toLowerCase().includes(city.toLowerCase()))
+    }
   },
   computed: {
     weathersFilter () {
+      console.log(this.weathers)
       return this.weathers.filter(w => w.name.toLowerCase().includes(this.city.toLowerCase()))
     }
   },
@@ -76,6 +85,12 @@ export default {
 /* .container{
 
 } */
+.trash{
+position: absolute;
+}
+.trash:hover{
+color: rgb(255, 81, 0);
+}
 .wrap{
     padding: 2em;
 }
@@ -123,12 +138,14 @@ border-radius: 10px;
 background-color: #2c3e50;
 gap: 1em;
 color: aliceblue;
+transition: transform 500ms;
 }
 .city >*{
     text-align: center;
 }
 .city:hover{
     cursor: pointer;
+    transform: scale(110%);
 }
 .degree{
     font-size: 3em;
