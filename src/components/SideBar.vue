@@ -8,39 +8,39 @@
     </div>
     <div class="logo">
       <i class="fa-solid fa-atom"></i>
-      <span class="text">JAWA</span>
+      <span class="text">JAWApp</span>
     </div>
-    <div class="item" @click="openRoute('/')">
+
+    <router-link to="/" @click="closeMenu" class="item">
       <i class="fa-solid fa-border-all"></i>
       <span class="text">Dashboard</span>
-    </div>
+    </router-link>
 
-    <div class="item" @click="openRoute('/map')">
+    <router-link to="/map" @click="closeMenu" class="item">
       <i class="fa-regular fa-map"></i>
       <span class="text">Map</span>
-    </div>
+    </router-link>
 
-    <div class="item" @click="openRoute('/favourites')">
+    <router-link to="/favourites" @click="closeMenu" class="item">
       <i class="fa-regular fa-star"></i>
       <span class="text">Favourites</span>
-    </div>
+    </router-link>
 
-    <div class="item" @click="openRoute('/review')">
+    <router-link to="/review" @click="closeMenu" class="item">
       <i class="fa-regular fa-thumbs-up"></i>
       <span class="text">Review</span>
-    </div>
-    <div class="item" @click="openRoute('/login')" v-if="!isLoggedIn">
-      <i class="fa-solid fa-arrow-right-to-bracket"></i>
-      <span class="text">Login</span>
-    </div>
-    <div class="item" @click="localLogout('/')" v-if="isLoggedIn">
+    </router-link>
+
+    <router-link to="/" @click="localLogout" class="item" v-if="isLoggedIn">
       <i class="fa-solid fa-arrow-right-from-bracket"></i>
       <span class="text">Logout</span>
-    </div>
-    <div class="item" @click="openRoute('/')">
-      <i class="fa-solid fa-gears"></i>
-      <span class="text">Debug</span>
-    </div>
+    </router-link>
+
+    <router-link to="/login" @click="closeMenu" class="item" v-else>
+      <i class="fa-solid fa-arrow-right-to-bracket"></i>
+      <span class="text">Login</span>
+    </router-link>
+
   </aside>
 </template>
 
@@ -48,24 +48,10 @@
 import { mapGetters, mapMutations } from 'vuex'
 export default {
   props: { menu: { type: Boolean, default: false } },
-  data () {
-    return {
-      isDebug: false
-    }
-  },
   emits: ['closeMenu'],
-  created () {
-    const url = new URLSearchParams(document.location.search)
-    if (url.get('debug') === 'true') {
-      this.isDebug = true
-    } else {
-      this.isDebug = false
-    }
-  },
   computed: {
     ...mapGetters(['isLoggedIn'])
   },
-
   methods: {
     ...mapMutations(['logout']),
     closeMenu () {
@@ -78,12 +64,8 @@ export default {
       this.logout()
       this.$toast.success('Logged out!')
     },
-    openRoute (route) {
-      this.$router.push(route)
+    localLogout () {
       this.closeMenu()
-    },
-    localLogout (route) {
-      this.openRoute(route)
       this.cleanAll()
     }
   }
@@ -170,6 +152,7 @@ export default {
   margin-top: 1em;
   margin-left: 1em;
   border-left: white 2px solid;
+  text-decoration: none;
 }
 
 .item:hover {

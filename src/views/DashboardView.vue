@@ -123,7 +123,7 @@ export default {
     WeatherChart
   },
   created () {
-    this.city = this.$route.query.city || 'rome'
+    this.city = this.$route.query.city || 'Roma'
     this.searchByCity()
   },
   data () {
@@ -281,7 +281,7 @@ export default {
   },
   computed: {
     fullCity () {
-      return this.location.name + ',' + this.location.country
+      return this.location.name + ', ' + this.location.country
     }
   }
 }

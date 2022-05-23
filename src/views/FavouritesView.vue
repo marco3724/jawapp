@@ -114,7 +114,7 @@ export default {
 </script>
 <style>
 </style>
-<style scoped>
+<style scoped lang="scss">
 /* .container{
 
 } */
@@ -131,9 +131,14 @@ export default {
 }
 
 .header {
-    margin: 2em 0;
+        margin: 1em;
+    margin-bottom: 3em;
     display: flex;
     justify-content: center;
+    @media (max-width: 800px) {
+        margin: 2em 0;
+    }
+
 }
 
 .header input {
