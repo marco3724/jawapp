@@ -53,6 +53,7 @@ export default {
       isDebug: false
     }
   },
+  emits: ['closeMenu'],
   created () {
     const url = new URLSearchParams(document.location.search)
     if (url.get('debug') === 'true') {
@@ -64,6 +65,7 @@ export default {
   computed: {
     ...mapGetters(['isLoggedIn'])
   },
+
   methods: {
     ...mapMutations(['logout']),
     closeMenu () {
