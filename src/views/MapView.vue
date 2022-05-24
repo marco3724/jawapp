@@ -4,10 +4,10 @@
   <div class='form'>
     <h1>Seleziona il tempo di oggi a {{ this.city}}:</h1>
     <div class="choices">
-      <div class="choice"><i class="fa-solid fa-sun" @click="index=0"></i></div>
-      <div class="choice"> <i class="fa-solid fa-cloud " @click="index=1"></i></div>
-      <div class="choice"> <i class="fa-solid fa-cloud-rain " @click="index=2"></i></div>
-      <div class="choice"> <i class="fa-solid fa-snowflake" @click="index=3"></i></div>
+      <div class="choice"><i class="fa-solid fa-sun" @click="select(0)"></i></div>
+      <div class="choice"> <i class="fa-solid fa-cloud " @click="select(1)"></i></div>
+      <div class="choice"> <i class="fa-solid fa-cloud-rain " @click="select(2)"></i></div>
+      <div class="choice"> <i class="fa-solid fa-snowflake" @click="select(3)"></i></div>
    </div>
    <button>segnala</button>
   </div>
@@ -18,10 +18,10 @@
           <div id="siteNotice"></div>
           <h1 id="firstHeading" class="firstHeading">{{mark.city}}</h1>
           <div id="bodyContent">
-              <div class="signal"><i class="fa-solid fa-sun" style="font-size:18px"></i>{{mark.signal[0]}} :persone hanno segnalato</div>
-              <div class="signal"><i class="fa-solid fa-cloud" style="font-size:18px"></i>{{mark.signal[1]}} :persone hanno segnalato</div>
-              <div class="signal"><i class="fa-solid fa-cloud-rain" style="font-size:18px"></i>{{mark.signal[2]}} :persone hanno segnalato</div>
-              <div class="signal"><i class="fa-solid fa-snowflake" style="font-size:18px"></i>{{mark.signal[3]}}persone hanno segnalato</div>
+              <div class="signal"><i class="fa-solid fa-sun" style="font-size:18px"></i>{{mark.signal[0]}}: persone hanno segnalato</div>
+              <div class="signal"><i class="fa-solid fa-cloud" style="font-size:18px"></i>{{mark.signal[1]}}: persone hanno segnalato</div>
+              <div class="signal"><i class="fa-solid fa-cloud-rain" style="font-size:18px"></i>{{mark.signal[2]}}: persone hanno segnalato</div>
+              <div class="signal"><i class="fa-solid fa-snowflake" style="font-size:18px"></i>{{mark.signal[3]}}: persone hanno segnalato</div>
           </div>
         </div>
       </InfoWindow>
@@ -66,6 +66,13 @@ export default defineComponent({
     document.querySelector('.content').className = 'contentF'
   },
   methods: {
+    select (i) {
+      this.index = i
+      const c = document.querySelectorAll('.choice')
+      for (let j = 0; j < 4; j++) {
+        if (j === i) { c[j].className = 'choice selected' } else { c[j].className = 'choice' }
+      }
+    }
     // async getCity (currPos) {
     //   const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${currPos.lat},${currPos.lng}&key=AIzaSyBtNRVr8IbLg1JMNJKyi2T4F334JedSH6g`
     //   const response = await fetch(url)
@@ -173,6 +180,9 @@ button:hover{
     display: flex;
     align-items: center;
     justify-content: center;
+}
+.selected{
+  background-color: bisque;
 }
 .choice:hover{
   background-color: bisque;
