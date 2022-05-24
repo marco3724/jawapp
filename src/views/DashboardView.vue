@@ -304,7 +304,7 @@ export default {
         el.split(',')[0].toLowerCase().includes(this.city.split(',')[0].toLowerCase())
       )
     },
-    addFav (city) {
+    addFav (city) { // provare ad aggiungere is logged in
       if (!this.favourites.includes(city)) {
         this.favourites.push(city)
         http.post('user/update', { favourites: this.favourites }, {
@@ -313,6 +313,7 @@ export default {
           }
         }).then(res => {
           console.log('success')
+          this.fav = this.isFavourite()
         })
           .catch(err => console.log(err))
       }
@@ -326,6 +327,7 @@ export default {
         }
       }).then(res => {
         console.log('success')
+        this.fav = this.isFavourite()
       })
         .catch(err => console.log(err))
     }
