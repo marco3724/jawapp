@@ -85,7 +85,7 @@ export default defineComponent({
     return {
       center: { lat: 41.902782, lng: 12.496366 },
       city: '',
-      index: 0,
+      index: -1,
       location: null,
       gettingLocation: false,
       errorStr: null,
