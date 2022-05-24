@@ -379,11 +379,16 @@ export default {
 }
 
 .search-bar {
-  max-width: minmax(350px, 80%);
+  max-width: 350px;
   margin: auto;
   padding: 0.5em;
   border-radius: 10px;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+
+  @media (max-width: 800px) {
+  max-width: 100%;
+}
+
 }
 
 .search-bar i {
