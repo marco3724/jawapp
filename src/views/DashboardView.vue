@@ -12,7 +12,7 @@
       <div class="main-info">
         <div class="location">
                     <span class="city">
-                        <i class="fa-solid fa-star" id='fav' @click="removeFav(fullCity)" v-if="favWrap"></i>
+                        <i class="fa-solid fa-star" id='fav' @click="removeFav(fullCity)" v-if="fav"></i>
                         <i class="fa-regular fa-star" id='fav' @click="addFav(fullCity)" v-else></i>
                         <i class="fa-solid fa-location-dot"></i> {{fullCity}}
                     </span>
@@ -160,7 +160,8 @@ export default {
       daily: [],
       key: '80b42f8e53b81f545a7268529925647e',
       favourites: [],
-      fav: false
+      fav: false,
+      backupCity: '' // mi serve quando rimuovo dai preferiti
     }
   },
   mounted () { },
@@ -209,8 +210,13 @@ export default {
           this.daily.push(data.daily[i])
         }
         this.charts()
+        console.log(this.favourites)
+        console.log(this.isFavourite())
+        this.backupCity = this.city
         this.fav = this.isFavourite()
-        console.log(this.fav)
+
+        this.city = ''
+        // console.log(this.fav)
         // console.log(data)
       } catch (e) {
         // this.$toast.warning('citta non trovata\n' + e)
@@ -301,7 +307,7 @@ export default {
     },
     isFavourite () {
       return this.favourites.some(el =>
-        el.split(',')[0].toLowerCase().includes(this.city.split(',')[0].toLowerCase())
+        el.split(',')[0].toLowerCase().includes(this.backupCity.split(',')[0].toLowerCase())
       )
     },
     addFav (city) { // provare ad aggiungere is logged in
@@ -312,7 +318,8 @@ export default {
             'x-access-token': localStorage.getItem('accessToken')
           }
         }).then(res => {
-          console.log('success')
+          // console.log('success')
+          this.$toast.success('city added to favourites')
           this.fav = this.isFavourite()
         })
           .catch(err => console.log(err))
@@ -326,7 +333,8 @@ export default {
           'x-access-token': localStorage.getItem('accessToken')
         }
       }).then(res => {
-        console.log('success')
+        this.$toast.warning('city removed from favourites')
+        // console.log('success')
         this.fav = this.isFavourite()
       })
         .catch(err => console.log(err))
@@ -336,9 +344,6 @@ export default {
   computed: {
     fullCity () {
       return this.location.name + ', ' + this.location.country
-    },
-    favWrap () {
-      return this.fav
     }
   }
 }

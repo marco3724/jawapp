@@ -29,16 +29,16 @@
     </div>
   </div>
   <div class="form">
-    <form >
+    <form @submit.prevent="sendReview()">
       <label for="cars">rate the website:</label>
-      <select id="stars" name="stars">
+      <select id="stars" v-model="stars" name="stars">
         <option value="1">1</option>
         <option value="2">2</option>
         <option value="3">3</option>
         <option value="4">4</option>
-        <option value="4">5</option>
+        <option value="5">5</option>
       </select>
-      <textarea name="comment" />
+      <textarea v-model="comment" name="comment" placeholder="write your comment here..."/>
       <input type="submit" value="send">
     </form>
   </div>
@@ -47,81 +47,67 @@
   <div class="review" v-for="rev in reviews" :key="rev" >
     <div class="star">
       <div class="vote" v-for="index in 5" :key="index" >
-        <div v-if="rev.star>=index"><i class="fa-solid fa-star"></i></div>
+        <div v-if="rev.rating>=index"><i class="fa-solid fa-star"></i></div>
         <div v-else> <i class="fa-regular fa-star"></i></div>
       </div>
     </div>
-    <div class="comment">{{rev.comment}}</div>
+    <div class="comment">{{rev.description}}</div>
   </div>
 </div>
 </template>
 
 <script>
-
+import http from '../http-common'
 export default {
   data () {
     return {
-      reviews: [
-        {
-          star: 1,
-          comment: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
-        },
-        {
-          star: 2,
-          comment: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
-        },
-        {
-          star: 4,
-          comment: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
-        },
-        {
-          star: 4,
-          comment: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
-        },
-        {
-          star: 3,
-          comment: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
-        },
-        {
-          star: 5,
-          comment: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
-        }, {
-          star: 5,
-          comment: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
-        }, {
-          star: 5,
-          comment: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
-        }, {
-          star: 5,
-          comment: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
-        }, {
-          star: 5,
-          comment: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
-        }, {
-          star: 3,
-          comment: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
-        },
-        {
-          star: 3,
-          comment: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
-        }
-
-      ]
+      reviews: [],
+      stars: 1,
+      comment: ''
     }
   },
   methods: {
     id (i) {
       return 'bar' + i
+    },
+    sendReview () {
+      http.post('review/add', {
+        rating: this.stars,
+        description: this.comment
+      }, {
+        headers: {
+          'x-access-token': localStorage.getItem('accessToken')
+        }
+      }).then(res => {
+        http.get('review/all', {
+          headers: {
+            'x-access-token': localStorage.getItem('accessToken')
+          }
+        }).then(res => {
+          this.stars = 1
+          this.comment = ''
+          this.reviews = res.data.reviews
+        })
+          .catch(err => console.log(err))
+        console.log(res + 's uccess')
+      }).catch(err => console.log(err))
     }
   },
-  mounted () {
-
+  created () {
+    http.get('review/all', {
+      headers: {
+        'x-access-token': localStorage.getItem('accessToken')
+      }
+    }).then(res => {
+      this.reviews = res.data.reviews
+    })
+      .catch(err => console.log(err))
   },
   computed: {
     media () {
       let m = 0
       this.reviews.forEach(el => {
-        m += el.star
+        m += el.rating
       })
       return (m / this.reviews.length).toFixed(1)
     },
@@ -132,7 +118,7 @@ export default {
       const n = [0, 0, 0, 0, 0]
       const obj = []
       this.reviews.forEach(rev => {
-        n[rev.star - 1]++
+        n[rev.rating - 1]++
       })
       for (let i = 4; i >= 0; i--) {
         obj.push({
@@ -235,18 +221,22 @@ height: 100%;
 #bar4::after{
   background:linear-gradient(#56ab2f , #a8e063);
   width:var(--perc4);
+
 }
 #bar3::after{
-background-image: linear-gradient(315deg, #fbb034 0%, #ffdd00 74%);;
+background-image: linear-gradient(315deg, #fbb034 0%, #ffdd00 74%);
 width: var(--perc3);
+
 }
 #bar2::after{
   background:linear-gradient(#ff9966 , #ff5e62);
   width: var(--perc2);
+
 }
 #bar1::after{
   background:linear-gradient(#ff512f , #dd2476);
   width: var(--perc1);
+
 }
 .form{
   display:grid;
@@ -258,6 +248,7 @@ form{
 }
 textarea{
   resize: none;
+  font-size: 1.5em;
 }
 input[type="submit"]{
   background: black;
