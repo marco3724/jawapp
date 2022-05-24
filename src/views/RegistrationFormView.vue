@@ -81,17 +81,43 @@ export default {
   },
   methods: {
     form_handler () {
-      const ok = true
-      // TODO: check if variables are not null
+      let ok = true
+      let message = ''
       // TODO: check if password and conf_password are correct
+      if (this.password !== this.conf_password) {
+        ok = false
+        message = 'passwords don\'t match!'
+      }
+      // check if email is in correct format
+      if (this.conf_password === '') {
+        ok = false
+        message = 'Confirm Password cannot be empty!'
+      }
+      if (this.password === '') {
+        ok = false
+        message = 'Password cannot be empty!'
+      }
+      if (!/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/.test(this.email)) {
+        ok = false
+        message = 'please check email format!'
+      }
+      if (this.email === '') {
+        ok = false
+        message = 'Email cannot be empty!'
+      }
+      if (this.username === '') {
+        ok = false
+        message = 'Username cannot be empty!'
+      }
+
       if (ok) {
         this.is_loading = true
-        console.log(this.username, this.email, this.password, this.conf_password, this.fav_city)
+        // console.log(this.username, this.email, this.password, this.conf_password, this.fav_city)
         const data = {
           username: this.username,
           email: this.email,
           password: this.password,
-          favourites: [this.fav_city]
+          favourites: [this.fav_city === '' ? 'Rome, IT' : this.fav_city]
         }
         http.post('auth/register', data)
           .then(res => {
@@ -113,7 +139,7 @@ export default {
           })
           .finally(() => { this.is_loading = false })
       } else {
-        this.$toast.warning('format not correct!')
+        this.$toast.warning(message || 'format not correct!')
       }
     }
   },

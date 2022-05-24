@@ -137,6 +137,8 @@ export default {
       this.favourites = res.data.favourites
       this.city = this.$route.query.city || res.data.favourites[0] || 'Rome'
       this.searchByCity()
+      // era brutto
+      // this.$toast.success('Welcome back ' + res.data.username + '!')
     }).catch(err => {
       this.city = this.$route.query.city || 'Rome'
       this.searchByCity()
