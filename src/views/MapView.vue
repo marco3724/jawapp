@@ -182,10 +182,10 @@ button:hover{
     justify-content: center;
 }
 .selected{
-  background-color: bisque;
+  background-color: lightsteelblue;
 }
 .choice:hover{
-  background-color: bisque;
+  background-color: lightsteelblue;
   cursor: pointer;
 }
 .choices{
