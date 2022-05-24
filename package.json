@@ -17,6 +17,8 @@
     "vue-chartjs": "^4.1.0",
     "vue-router": "^4.0.3",
     "vue-toast-notification": "3.0",
+    "vue2-google-maps": "^0.10.7",
+    "vue3-google-map": "^0.12.0",
     "vuex": "^4.0.0"
   },
   "devDependencies": {

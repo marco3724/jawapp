@@ -1,150 +1,193 @@
+
 <template>
- <h3>GoogleMapsApi</h3>
-  <div style="height:100%; width:100%;">
-    {{currPos.lat.toFixed(2)}},   {{currPos.lng.toFixed(2)}}
+<div class='container'>
+  <div class='form'>
+    <h1>Seleziona il tempo di oggi a {{ this.city}}:</h1>
+    <div class="choices">
+      <div class="choice"><i class="fa-solid fa-sun" @click="index=0"></i></div>
+      <div class="choice"> <i class="fa-solid fa-cloud " @click="index=1"></i></div>
+      <div class="choice"> <i class="fa-solid fa-cloud-rain " @click="index=2"></i></div>
+   </div>
+   <button>segnala</button>
   </div>
-  <div ref="mapDiv" id='map'/>
+  <GoogleMap api-key="AIzaSyDBm40JV-OqOyW_wTjclonA40i-C934Mv4" style="width: 100%; height: 65vh" :center="center" :zoom="6">
+    <Marker :options="{ position: mark.coords }" v-for="mark in markers" :key="mark">
+      <InfoWindow>
+        <div id="contet">
+          <div id="siteNotice"></div>
+          <h1 id="firstHeading" class="firstHeading">{{mark.city}}</h1>
+          <div id="bodyContent">
+              <div class="signal"><i class="fa-solid fa-sun" style="font-size:18px"></i>{{mark.signal[0]}} :persone hanno segnalato</div>
+              <div class="signal"><i class="fa-solid fa-cloud" style="font-size:18px"></i>{{mark.signal[1]}} :persone hanno segnalato</div>
+              <div class="signal"><i class="fa-solid fa-cloud-rain" style="font-size:18px"></i>{{mark.signal[2]}} :persone hanno segnalato</div>
+          </div>
+        </div>
+      </InfoWindow>
+    </Marker>
+  </GoogleMap>
+</div>
 </template>
 
 <script>
-/* eslint-disable no-new */
 /* eslint-disable no-undef */
-import { Loader } from '@googlemaps/js-api-loader'
-import { computed, onMounted, ref } from '@vue/runtime-core'
-import { geoLocation } from '../geoLocation.js'
-const API_KEY = 'AIzaSyDBm40JV-OqOyW_wTjclonA40i-C934Mv4'
-export default {
-  created () {
-    document.querySelector('.content').className = 'contentF'
-  },
-  setup () {
-    const markers = [
-      {
-        coords: { lat: 41.902782, lng: 12.496366 },
-        content: '<h1>Rome</h1>' +
-            '<p><i class="fa-solid fa-sun" style="font-size:18px";></i>&nbsp &nbsp :persone hanno segnalato</p>' +
-            '<p><i class="fa-solid fa-cloud" style="font-size:18px";></i>&nbsp &nbsp :persone hanno segnalato</p>' +
-            '<p><i class="fa-solid fa-cloud-rain" style="font-size:18px";></i>&nbsp &nbsp :persone hanno segnalato</p>'
-      },
-      {
-        coords: { lat: 39.223843, lng: 9.121661 },
-        content: '<h1>Cagliari</h1>' +
-            '<p><i class="fa-solid fa-sun" style="font-size:18px";></i>&nbsp &nbsp :persone hanno segnalato</p>' +
-            '<p><i class="fa-solid fa-cloud" style="font-size:18px";></i>&nbsp &nbsp :persone hanno segnalato</p>' +
-            '<p><i class="fa-solid fa-cloud-rain" style="font-size:18px";></i>&nbsp &nbsp :persone hanno segnalato</p>'
-      },
-      {
-        coords: { lat: 43.769562, lng: 11.255814 },
-        content: '<h1>Florence</h1>' +
-            '<p><i class="fa-solid fa-sun" style="font-size:18px";></i>&nbsp &nbsp :persone hanno segnalato</p>' +
-            '<p><i class="fa-solid fa-cloud" style="font-size:18px";></i>&nbsp &nbsp :persone hanno segnalato</p>' +
-            '<p><i class="fa-solid fa-cloud-rain" style="font-size:18px";></i>&nbsp &nbsp :persone hanno segnalato</p>'
-      },
-      {
-        coords: { lat: 45.4613, lng: 9.1595 },
-        content: '<h1>Milan</h1>' +
-            '<p><i class="fa-solid fa-sun" style="font-size:18px";></i>&nbsp &nbsp :persone hanno segnalato</p>' +
-            '<p><i class="fa-solid fa-cloud" style="font-size:18px";></i>&nbsp &nbsp :persone hanno segnalato</p>' +
-            '<p><i class="fa-solid fa-cloud-rain" style="font-size:18px";></i>&nbsp &nbsp :persone hanno segnalato</p>'
-      },
-      {
-        coords: { lat: 45.068371, lng: 7.683070 },
-        content: '<h1>Turin</h1>' +
-            '<p><i class="fa-solid fa-sun" style="font-size:18px";></i>&nbsp &nbsp :persone hanno segnalato</p>' +
-            '<p><i class="fa-solid fa-cloud" style="font-size:18px";></i>&nbsp &nbsp :persone hanno segnalato</p>' +
-            '<p><i class="fa-solid fa-cloud-rain" style="font-size:18px";>&nbsp &nbsp :persone hanno segnalato</i></p>'
-      },
-      {
-        coords: { lat: 45.440845, lng: 12.315515 },
-        content: '<h1>Venice</h1>' +
-            '<p><i class="fa-solid fa-sun" style="font-size:18px";></i>&nbsp &nbsp :persone hanno segnalato</p>' +
-            '<p><i class="fa-solid fa-cloud" style="font-size:18px";></i>&nbsp &nbsp :persone hanno segnalato</p>' +
-            '<p><i class="fa-solid fa-cloud-rain" style="font-size:18px";>&nbsp &nbsp :persone hanno segnalato</i></p>'
-      },
-      {
-        coords: { lat: 38.115662, lng: 13.361470 },
-        content: '<h1>Palermo</h1>' +
-            '<p><i class="fa-solid fa-sun" style="font-size:18px";></i>&nbsp &nbsp :persone hanno segnalato</p>' +
-            '<p><i class="fa-solid fa-cloud" style="font-size:18px";></i>&nbsp &nbsp :persone hanno segnalato</p>' +
-            '<p><i class="fa-solid fa-cloud-rain" style="font-size:18px";></i>&nbsp &nbsp :persone hanno segnalato</p>'
-      },
-      {
-        coords: { lat: 41.125912, lng: 16.872110 },
-        content: '<h1>Bari</h1>' +
-            '<p><i class="fa-solid fa-sun" style="font-size:18px";></i>&nbsp &nbsp :persone hanno segnalato</p>' +
-            '<p><i class="fa-solid fa-cloud" style="font-size:18px";></i>&nbsp &nbsp :persone hanno segnalato</p>' +
-            '<p><i class="fa-solid fa-cloud-rain" style="font-size:18px";></i>&nbsp &nbsp :persone hanno segnalato</p>'
-      },
-      {
-        coords: { lat: 40.8359336, lng: 14.2487826 },
-        content: '<h1>Naples</h1>' +
-            '<p><i class="fa-solid fa-sun" style="font-size:18px";></i>&nbsp &nbsp :persone hanno segnalato</p>' +
-            '<p><i class="fa-solid fa-cloud" style="font-size:18px";></i>&nbsp &nbsp :persone hanno segnalato</p>' +
-            '<p><i class="fa-solid fa-cloud-rain" style="font-size:18px";></i>&nbsp &nbsp :persone hanno segnalato</p>'
-      }
-    ]
-    const { coords } = geoLocation()
-    const currPos = computed(() => ({
-      lat: coords.value.latitude,
-      lng: coords.value.longitude
-    }))
+import { defineComponent } from 'vue'
+import { GoogleMap, Marker, InfoWindow } from 'vue3-google-map'
+// import { geoLocation } from '../geoLocation.js'
+export default defineComponent({
+  components: { GoogleMap, Marker, InfoWindow },
 
-    const loader = new Loader({ apiKey: API_KEY })
-    const mapDiv = ref(null)
-    onMounted(async () => {
-      await loader.load()
-      new google.maps.Map(mapDiv.value, {
-        center: currPos.value,
-        zoom: 6
-      })
-      for (let i = 0; i < this.markers.length; i++) {
-        console.log(this.marker)
-        addMarker(markers[i])
-      };
+  created () {
+    if (!('geolocation' in navigator)) {
+      this.errorStr = 'Geolocation is not available.'
+      return
+    }
+
+    this.gettingLocation = true
+
+    navigator.geolocation.getCurrentPosition(pos => {
+      this.gettingLocation = false
+      this.location = pos
+
+      fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${this.location.coords.latitude},${this.location.coords.longitude}&key=AIzaSyBtNRVr8IbLg1JMNJKyi2T4F334JedSH6g`)
+        .then(response => response.json())
+        .then(data => {
+          // console.log(data)
+          this.city = data.plus_code.compound_code.split(' ')[1]
+          return 0
+        })
+    }, err => {
+      this.gettingLocation = false
+      this.errorStr = err.message
     })
-    return { currPos, mapDiv }
   },
   mounted () {
-
-  },
-  data () {
-    return {
-
-    }
+    document.querySelector('.content').className = 'contentF'
   },
   methods: {
-    addMarker (props) {
-      const marker = new google.maps.Marker({
-        position: props.coords,
-        map: map
-      })
-
-      if (props.content) {
-        const infoWindow = new google.maps.InfoWindow({
-          content: props.content
-        })
-
-        marker.addListener('click', function () {
-          infoWindow.open(map, marker)
-          map.setZoom(10)
-          map.setCenter(marker.getPosition())
-        })
-      }
-    }
+    // async getCity (currPos) {
+    //   const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${currPos.lat},${currPos.lng}&key=AIzaSyBtNRVr8IbLg1JMNJKyi2T4F334JedSH6g`
+    //   const response = await fetch(url)
+    //   const data = await response.json()
+    //   return data.results[5].formatted_address.split(' ')[0]
+    // }
   },
-  computed: {
 
+  data () {
+    return {
+      center: { lat: 41.902782, lng: 12.496366 },
+      city: '',
+      index: 0,
+      location: null,
+      gettingLocation: false,
+      errorStr: null,
+      markers: [
+        {
+          coords: { lat: 41.902782, lng: 12.496366 },
+          city: 'Roma',
+          signal: [0, 0, 0]
+        },
+        {
+          coords: { lat: 39.223843, lng: 9.121661 },
+          city: 'Cagliari',
+          signal: [0, 0, 0]
+        },
+        {
+          coords: { lat: 43.769562, lng: 11.255814 },
+          city: 'Firenze',
+          signal: [0, 0, 0]
+        },
+        {
+          coords: { lat: 45.4613, lng: 9.1595 },
+          city: 'Milano',
+          signal: [0, 0, 0]
+        },
+        {
+          coords: { lat: 45.068371, lng: 7.683070 },
+          city: 'Torino',
+          signal: [0, 0, 0]
+        },
+        {
+          coords: { lat: 45.440845, lng: 12.315515 },
+          city: 'Venezia',
+          signal: [0, 0, 0]
+        },
+        {
+          coords: { lat: 38.115662, lng: 13.361470 },
+          city: 'Palermo',
+          signal: [0, 0, 0]
+        },
+        {
+          coords: { lat: 41.125912, lng: 16.872110 },
+          city: 'Bari',
+          signal: [0, 0, 0]
+        },
+        {
+          coords: { lat: 40.8359336, lng: 14.2487826 },
+          city: 'Napoli',
+          signal: [0, 0, 0]
+        }
+      ]
+    }
   },
   beforeUnmount () {
     document.querySelector('.contentF').className = 'content' // ritorno stato iniziale
   }
-}
+})
 </script>
 
-<style scoped >
-#map{
-  margin: auto;
-  width:90%;
-  height:80vh;
+<style scoped>
+i{
+  width: 25px;
+  height: 25px;
+}
+.container{
+  margin: 1em;
+  margin-right: 3em;
+}
+.form{
+  margin-bottom: 1em;
+  padding: 1em;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px, rgb(51, 51, 51) 0px 0px 0px 3px;
+  border-radius: 15px;
+
+}
+button{
+  padding: 1em;
+  border-radius: 15px;
+  background: black;
+  color: white;
+
+}
+button:hover{
+  cursor: pointer;
+    background: white;
+  color: black;
+}
+.choice{
+  border-radius: 15px;
+    width: 50px;
+    height: 50px;
+    font-size:25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.choice:hover{
+  background-color: bisque;
+  cursor: pointer;
+}
+.choices{
+    display: flex;
+    gap:1em;
+    margin-bottom: 1em;
+}
+@media (max-width:1024px){
+  .form{
+    margin-top: 3em;
+  }
+  .container{
+    margin-right: 1em;
+  }
+
 }
 </style>
