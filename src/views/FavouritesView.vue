@@ -70,7 +70,7 @@ export default {
       this.cities = res.data.favourites
       this.cities.forEach(city => {
         fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${this.key}`).then(response => response.json())
-          .then(data => this.weathers.push(data))
+          .then(data => { data.name = city; this.weathers.push(data) })
       })
     }).catch(err => console.log(err))
   },
