@@ -127,7 +127,7 @@ $black: #000000;
 $grey: #cccccc;
 
 body {
-  font-family: Verdana, Geneva, sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-size: 14px;
   background: #f2f2f2;
 }

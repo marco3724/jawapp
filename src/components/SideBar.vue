@@ -136,12 +136,6 @@ export default {
   position: relative;
 }
 
-.text a {
-  font-weight: bold;
-  text-decoration: none;
-  color: #a7a9a9;
-}
-
 .logo {
   color: #0f1621;
   font-size: 1.5em;
@@ -153,6 +147,8 @@ export default {
   margin-left: 1em;
   border-left: white 2px solid;
   text-decoration: none;
+  font-family: 'Roboto', sans-serif;
+  color: #a7a9a9;
 }
 
 .item:hover {

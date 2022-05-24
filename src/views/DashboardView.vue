@@ -509,7 +509,7 @@ export default {
 
 .value-container {
   position: relative;
-  font-family: "Poppins", sans-serif;
+  font-family: "Roboto", sans-serif;
   color: #231c3d;
 }
 
