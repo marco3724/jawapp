@@ -86,13 +86,14 @@ export default {
   methods: {
     remove (city) {
       // console.log(this.cities)
-      this.cities = this.cities.filter(c => c.split(',')[0].toLowerCase() !== city.toLowerCase())
+      this.cities = this.cities.filter(c => c.toLowerCase() !== city.toLowerCase())
       // console.log(this.cities)
       http.post('user/update', { favourites: this.cities }, {
         headers: {
           'x-access-token': localStorage.getItem('accessToken')
         }
       }).then(res => {
+        console.log(res.data)
         this.weathers = this.weathers.filter(w => !w.name.toLowerCase().includes(city.toLowerCase()))
       })
         .catch(err => console.log(err))
