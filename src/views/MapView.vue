@@ -9,10 +9,10 @@
 <script>
 /* eslint-disable no-new */
 /* eslint-disable no-undef */
-import { computed, ref, onMounted } from '@vue/runtime-core'
-import { geoLocation } from '../geoLocation.js'
 import { Loader } from '@googlemaps/js-api-loader'
-const API_KEY = 'AIzaSyDrBovSIJVUEUKOpcq1J6GAu_F2d343jFI'
+import { computed, onMounted, ref } from '@vue/runtime-core'
+import { geoLocation } from '../geoLocation.js'
+const API_KEY = 'AIzaSyDBm40JV-OqOyW_wTjclonA40i-C934Mv4'
 export default {
   created () {
     document.querySelector('.content').className = 'contentF'
@@ -117,7 +117,6 @@ export default {
       const marker = new google.maps.Marker({
         position: props.coords,
         map: map
-
       })
 
       if (props.content) {
