@@ -100,6 +100,7 @@ export default {
         }
       }).then(res => {
         console.log(res.data)
+        this.$toast.warning('city removed from favourites')
         this.weathers = this.weathers.filter(w => !w.name.toLowerCase().includes(city.toLowerCase()))
       })
         .catch(err => console.log(err))
