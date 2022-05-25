@@ -4,10 +4,10 @@
   <div class='form' v-if="allow">
     <h1>Seleziona il tempo di oggi a {{ this.city}}:</h1>
     <div class="choices">
-      <div class="choice"><i class="fa-solid fa-sun" @click="select(0)"></i></div>
-      <div class="choice"> <i class="fa-solid fa-cloud " @click="select(1)"></i></div>
-      <div class="choice"> <i class="fa-solid fa-cloud-rain " @click="select(2)"></i></div>
-      <div class="choice"> <i class="fa-solid fa-snowflake" @click="select(3)"></i></div>
+      <div class="choice" @click="select(0)"><i class="fa-solid fa-sun" ></i></div>
+      <div class="choice" @click="select(1)"> <i class="fa-solid fa-cloud"></i></div>
+      <div class="choice" @click="select(2)"> <i class="fa-solid fa-cloud-rain"></i></div>
+      <div class="choice" @click="select(3)"> <i class="fa-solid fa-snowflake"></i></div>
    </div>
    <button @click="signal">segnala</button>
   </div>
@@ -16,9 +16,16 @@
       <h1>{{errorStr}}</h1>
     </div>
   </div>
-  <GoogleMap api-key="AIzaSyDBm40JV-OqOyW_wTjclonA40i-C934Mv4" style="width: 100%; height: 65vh" :center="center" :zoom="6">
+ <google-map
+ api-key="AIzaSyDBm40JV-OqOyW_wTjclonA40i-C934Mv4"
+ style="width: 100%; height: 65vh"
+ :center="center"
+ :zoom="6"
+  :fullscreen-control=false
+  :map-type-control=false
+ >
     <Marker :options="{ position: mark.coords }" v-for="mark in markers" :key="mark" @click="getInfo(mark.city,mark.index)">
-      <InfoWindow>
+      <info-window>
         <div id="contet">
           <div id="siteNotice"></div>
           <h1 id="firstHeading" class="firstHeading">{{mark.city}}</h1>
@@ -29,9 +36,9 @@
               <div class="signal"><i class="fa-solid fa-snowflake" style="font-size:18px"></i>{{mark.signal[3]}}: persone hanno segnalato</div>
           </div>
         </div>
-      </InfoWindow>
+      </info-window>
     </Marker>
-  </GoogleMap>
+  </google-map>
 </div>
 </template>
 
@@ -91,7 +98,7 @@ export default defineComponent({
           'x-access-token': localStorage.getItem('accessToken')
         }
       }).then(res => {
-        // console.log(res)
+        // console.log(res.data)
         this.markers[key].signal[0] = res.data.sun
         this.markers[key].signal[1] = res.data.cloud
         this.markers[key].signal[2] = res.data.rain
@@ -100,6 +107,10 @@ export default defineComponent({
         .catch(err => console.log(err))
     },
     signal () {
+      if (this.index === -1) {
+        this.$toast.info('Seleziona il meteo nella tua zona!')
+        return
+      }
       http.post('signal/add', {
         city: this.city,
         signal: this.index + 1
@@ -108,10 +119,18 @@ export default defineComponent({
           'x-access-token': localStorage.getItem('accessToken')
         }
       }).then(res => {
-        this.$toast.success('signal succesfully send')
+        this.$toast.success('Grazie per aver segnalato il meteo!')
         // console.log(res)
       })
         .catch(err => this.$toast.success('error occured' + err))
+        .finally(() => {
+          this.index = -1
+
+          const c = document.querySelectorAll('.choice')
+          for (let j = 0; j < 4; j++) {
+            c[j].className = 'choice'
+          }
+        })
     }
     // async getCity (currPos) {
     //   const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${currPos.lat},${currPos.lng}&key=AIzaSyBtNRVr8IbLg1JMNJKyi2T4F334JedSH6g`
