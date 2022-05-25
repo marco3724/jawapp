@@ -100,7 +100,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$blue: #2a5fb4;
+$blue: black;
 $black: #000000;
 $grey: #cccccc;
 
@@ -122,6 +122,7 @@ body {
   background: #fff;
   width: 400px;
   max-width: 100%;
+  border-radius: 15px;
   box-sizing: border-box;
   padding: 25px;
   margin: 8% auto 0;
@@ -217,6 +218,7 @@ body {
   }
 }
 .button {
+
       background: $blue;
       left: 15%;
       padding: 8px 16px;
@@ -224,7 +226,7 @@ body {
       width: 70%;
       border: none;
       outline: none;
-      border-radius: 2px;
+       border-radius: 5px;
       cursor: pointer;
       color: #fff;
       font-size: 1.1em;
@@ -315,6 +317,7 @@ body {
 
 @media (max-width: 600px) {
   .form_wrapper {
+    margin-top: 5em;
     .col_half {
       width: 100%;
       float: none;

@@ -154,7 +154,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$blue: #2a5fb4;
+$blue: black;
 $black: #000000;
 $grey: #cccccc;
 
@@ -173,6 +173,7 @@ body {
   }
 }
 .form_wrapper {
+  border-radius: 15px;
   background: #fff;
   width: 400px;
   max-width: 100%;
@@ -278,7 +279,7 @@ body {
       width: 70%;
       border: none;
       outline: none;
-      border-radius: 2px;
+      border-radius: 5px;
       cursor: pointer;
       color: #fff;
       font-size: 1.1em;
@@ -369,6 +370,7 @@ body {
 
 @media (max-width: 600px) {
   .form_wrapper {
+    margin-top:5em;
     .col_half {
       width: 100%;
       float: none;
