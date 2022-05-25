@@ -222,7 +222,7 @@ export default {
         // console.log(data)
       } catch (e) {
         // this.$toast.warning('citta non trovata\n' + e)
-        this.$toast.warning(this.city + ' citta non trovata\n')
+        this.$toast.warning(this.city + ' city not found!')
         this.city = ''
       }
     },
