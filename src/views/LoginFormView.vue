@@ -119,8 +119,9 @@ body {
   }
 }
 .form_wrapper {
+   max-height: 20rem;
   background: #fff;
-  width: 400px;
+  width: 390px;
   max-width: 100%;
   border-radius: 15px;
   box-sizing: border-box;
