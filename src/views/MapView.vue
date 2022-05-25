@@ -91,7 +91,7 @@ export default defineComponent({
           'x-access-token': localStorage.getItem('accessToken')
         }
       }).then(res => {
-        console.log(res)
+        // console.log(res)
         this.markers[key].signal[0] = res.data.sun
         this.markers[key].signal[1] = res.data.cloud
         this.markers[key].signal[2] = res.data.rain
@@ -108,9 +108,10 @@ export default defineComponent({
           'x-access-token': localStorage.getItem('accessToken')
         }
       }).then(res => {
-        console.log(res)
+        this.$toast.success('signal succesfully send')
+        // console.log(res)
       })
-        .catch(err => console.log(err))
+        .catch(err => this.$toast.success('error occured' + err))
     }
     // async getCity (currPos) {
     //   const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${currPos.lat},${currPos.lng}&key=AIzaSyBtNRVr8IbLg1JMNJKyi2T4F334JedSH6g`
