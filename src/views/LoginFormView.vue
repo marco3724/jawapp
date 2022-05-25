@@ -44,6 +44,12 @@
 import { mapMutations } from 'vuex'
 import http from '../http-common'
 export default {
+  mounted () {
+    document.querySelector('.content').className = 'contentF'
+  },
+  beforeUnmount () {
+    document.querySelector('.contentF').className = 'content' // ritorno stato iniziale
+  },
   setup () {
   },
   data () {
