@@ -1,11 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import CreditView from '../views/CreditView.vue'
 import DashboardView from '../views/DashboardView.vue'
 import FavouritesView from '../views/FavouritesView.vue'
 import LoginFormView from '../views/LoginFormView.vue'
 import MapView from '../views/MapView.vue'
 import RegistrationFormView from '../views/RegistrationFormView.vue'
 import ReviewView from '../views/ReviewView.vue'
-
 const routes = [
   {
     path: '/',
@@ -36,6 +36,11 @@ const routes = [
     path: '/favourites',
     name: 'favourites',
     component: FavouritesView
+  },
+  {
+    path: '/credits',
+    name: 'credits',
+    component: CreditView
   }
   // {
   //   path: '/about',

@@ -31,6 +31,11 @@
       <span class="text">Review</span>
     </router-link>
 
+    <router-link to="/credits" @click="closeMenu" class="item">
+      <i class="fa-solid fa-award"></i>
+      <span class="text">Credits</span>
+    </router-link>
+
     <router-link to="/" @click="localLogout" class="item" v-if="isLoggedIn">
       <i class="fa-solid fa-arrow-right-from-bracket"></i>
       <span class="text">Logout</span>
