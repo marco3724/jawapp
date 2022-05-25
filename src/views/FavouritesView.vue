@@ -72,7 +72,13 @@ export default {
         fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${this.key}`).then(response => response.json())
           .then(data => { data.name = city; this.weathers.push(data) })
       })
-    }).catch(err => console.log(err))
+    }).catch(err => {
+      if (err.response.status === 401) {
+        this.$router.push({ name: 'login' })
+        this.$toast.info('Login to use this function!')
+      }
+      console.log(err)
+    })
   },
   data () {
     return {
