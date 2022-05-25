@@ -134,13 +134,13 @@ export default {
         'x-access-token': localStorage.getItem('accessToken')
       }
     }).then(res => {
-      this.favourites = res.data.favourites
-      this.city = this.$route.query.city || res.data.favourites[0] || 'Rome'
+      this.favourites = res.data.favourites || ['Rome, IT']
+      this.city = this.$route.query.city || this.favourites[0]
       this.searchByCity()
       // era brutto
       // this.$toast.success('Welcome back ' + res.data.username + '!')
     }).catch(err => {
-      this.city = this.$route.query.city || 'Rome'
+      this.city = this.$route.query.city || 'Rome, IT'
       this.searchByCity()
       console.log(err)
     })
@@ -175,12 +175,12 @@ export default {
         )
         const loc = await res.json()
         this.location = loc[0]
-        console.log(loc)
+        // console.log(loc)
         const res1 = await fetch(
           `https://api.openweathermap.org/data/2.5/onecall?lat=${loc[0].lat}&lon=${loc[0].lon}&exclude={alerts,minutely}&units=metric&appid=${this.key}`
         )
         const data = await res1.json()
-        this.cityName = this.city
+        this.cityName = this.location.name + ', ' + this.location.country
         this.current = data.current
         this.hourly = []
         this.daily = []
@@ -214,7 +214,7 @@ export default {
         this.charts()
         console.log(this.favourites)
         console.log(this.isFavourite())
-        this.backupCity = this.city
+        this.backupCity = this.cityName
         this.fav = this.isFavourite()
 
         this.city = ''
@@ -222,7 +222,8 @@ export default {
         // console.log(data)
       } catch (e) {
         // this.$toast.warning('citta non trovata\n' + e)
-        this.$toast.warning('citta non trovata\n')
+        this.$toast.warning(this.city + ' city not found!')
+        this.city = ''
       }
     },
     formatTime (time) {
@@ -324,7 +325,10 @@ export default {
           this.$toast.success('city added to favourites')
           this.fav = this.isFavourite()
         })
-          .catch(err => console.log(err))
+          .catch(err => {
+            if (err.response.status === 401) { this.$toast.info('Login to use this function!') }
+            console.log(err)
+          })
       }
     },
     removeFav (city) {
@@ -345,7 +349,9 @@ export default {
   },
   computed: {
     fullCity () {
-      return this.location.name + ', ' + this.location.country
+      if (this.location) {
+        return (this.location.name + ', ' + this.location.country)
+      } else return this.backupCity
     }
   }
 }
