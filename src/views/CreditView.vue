@@ -19,7 +19,8 @@
                         </div>
                     </div>
                     <div class="info">
-                        Matricola: 1917265
+                        <p>Nome: Daniele</p>
+                        <p>Matricola: 1917265</p>
                     </div>
                 </div>
                 <div class="user">
@@ -34,7 +35,8 @@
                         </div>
                     </div>
                     <div class="info">
-                        Matricola: 1919137
+                        <p>Nome: Marco</p>
+                        <p>Matricola: 1919137</p>
                     </div>
                 </div>
                 <div class="user">
@@ -49,7 +51,8 @@
                         </div>
                     </div>
                     <div class="info">
-                        Matricola: 1895504
+                        <p>Nome: Sasha</p>
+                        <p>Matricola: 1895504</p>
                     </div>
                 </div>
             </div>
