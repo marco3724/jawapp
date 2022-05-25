@@ -82,7 +82,7 @@ export default {
       email: '',
       password: '',
       conf_password: '',
-      fav_city: 'Rome, Italy'
+      fav_city: 'Rome, IT'
     }
   },
   methods: {
