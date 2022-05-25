@@ -58,7 +58,8 @@
             </div>
         </div>
         <div class="description">
-            Questo sito e' stato realizzato per il progetto di Linguaggi e Tecnologie per il web 2021/22, da 2 studenti di Ingegneria Informatica ed uno di Informatica
+            <p>Questo sito e' stato realizzato per il progetto di Linguaggi e Tecnologie per il web 2021/22, da 2 studenti di Ingegneria Informatica ed uno di Informatica</p>
+            <p class="bold">made with love by Daniele, Sasha, Marco </p>
         </div>
     </div>
 </div>
@@ -80,7 +81,7 @@ export default {
 <style scoped>
 .container{
     display: flex;
-    align-items: center;
+
     justify-content: center;
    padding: 3em;
 
@@ -155,5 +156,8 @@ img{
 .info{
     color: #9FA7B4;
     text-align: center;
+}
+.bold{
+    font-weight: 700;
 }
 </style>
