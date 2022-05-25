@@ -1,7 +1,7 @@
 
 <template>
 <div class='container'>
-  <div class='form'>
+  <div class='form' v-if="allow">
     <h1>Seleziona il tempo di oggi a {{ this.city}}:</h1>
     <div class="choices">
       <div class="choice"><i class="fa-solid fa-sun" @click="select(0)"></i></div>
@@ -10,6 +10,11 @@
       <div class="choice"> <i class="fa-solid fa-snowflake" @click="select(3)"></i></div>
    </div>
    <button>segnala</button>
+  </div>
+  <div class="form" v-else>
+    <div class="error">
+      <h1>{{errorStr}}</h1>
+    </div>
   </div>
   <GoogleMap api-key="AIzaSyDBm40JV-OqOyW_wTjclonA40i-C934Mv4" style="width: 100%; height: 65vh" :center="center" :zoom="6">
     <Marker :options="{ position: mark.coords }" v-for="mark in markers" :key="mark">
@@ -41,6 +46,7 @@ export default defineComponent({
   created () {
     if (!('geolocation' in navigator)) {
       this.errorStr = 'Geolocation is not available.'
+      this.allow = false
       return
     }
 
@@ -49,7 +55,7 @@ export default defineComponent({
     navigator.geolocation.getCurrentPosition(pos => {
       this.gettingLocation = false
       this.location = pos
-
+      this.allow = true
       fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${this.location.coords.latitude},${this.location.coords.longitude}&key=AIzaSyBtNRVr8IbLg1JMNJKyi2T4F334JedSH6g`)
         .then(response => response.json())
         .then(data => {
@@ -58,8 +64,11 @@ export default defineComponent({
           return 0
         })
     }, err => {
+      this.allow = false
       this.gettingLocation = false
-      this.errorStr = err.message
+
+      if (err.code === 1) { this.errorStr = 'devi attivare la geolocalizzazione per poter segnalare' } else this.errorStr = err.message
+      console.log(err)
     })
   },
   mounted () {
@@ -86,6 +95,7 @@ export default defineComponent({
       center: { lat: 41.902782, lng: 12.496366 },
       city: '',
       index: -1,
+      allow: false,
       location: null,
       gettingLocation: false,
       errorStr: null,
@@ -180,6 +190,9 @@ button:hover{
     display: flex;
     align-items: center;
     justify-content: center;
+}
+.error{
+  color: #e74c3c;
 }
 .selected{
   background-color: lightsteelblue;
