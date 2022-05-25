@@ -80,7 +80,7 @@
 
       <div class="info">
         <div class="text-info">
-          <div class="name">UVI index</div>
+          <div class="name">UV index</div>
           <div class="about">Today UV index</div>
           <div class="value">{{ current.uvi }}</div>
         </div>
