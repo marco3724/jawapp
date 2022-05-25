@@ -59,7 +59,7 @@
         </div>
         <div class="description">
             <p>Questo sito e' stato realizzato per il progetto di Linguaggi e Tecnologie per il web 2021/22, da 2 studenti di Ingegneria Informatica ed uno di Informatica</p>
-            <p class="bold">made with love by Daniele, Sasha, Marco </p>
+            <p class="bold">© made with love by JAWApp Team  </p>
         </div>
     </div>
 </div>
